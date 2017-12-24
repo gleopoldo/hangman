@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# setup phoenix
+# mix deps.get 
+
+# setup ecto
+# mix ecto.create
+
+# run server
+# mix phx.server
+
+# run console
+# iex -S mix phx.server
