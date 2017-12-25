@@ -54,5 +54,5 @@ config :hangman, Hangman.Repo,
   username: "postgres",
   password: "postgres",
   database: "hangman_dev",
-  hostname: "localhost",
+  hostname: "database",
   pool_size: 10
