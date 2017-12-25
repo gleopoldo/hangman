@@ -1,5 +1,56 @@
 #!/bin/bash
 
+# The first arg provided here will be used as command option
+COMMAND=$1
+
+function build_containers {
+    echo "Creating containers..."
+    docker-compose build
+}
+
+function install_dependencies {
+    echo "Running mix deps.get to configure project dependencies..."
+    docker-compose run api mix deps.get
+}
+
+function create_database {
+    echo "Preparing database..."
+    docker-compose run api mix ecto.create
+}
+
+case $COMMAND in
+  setup)
+    build_containers
+    install_dependencies
+    echo "Done."
+  ;;
+
+  build)
+    build_containers
+    echo "Done."
+  ;;
+
+  create)
+    create_database
+    echo "Done"
+  ;;
+
+  start)
+    echo "Starting all containers..."
+    docker-compose up
+    echo "Done"
+  ;;
+
+  # Default option, display help information
+  *)
+    echo "Invalid option. The allowed ones are:"
+    echo "setup      - Setup the phoenix project"
+    echo "create     - Create the hangman database"
+    echo "run        - Run the hangman server"
+    echo "console    - Run the hangman console"
+  ;;
+esac
+
 # setup phoenix
 # mix deps.get 
 
