@@ -8,20 +8,12 @@ function build_containers {
     docker-compose build
 }
 
-function install_dependencies {
-    echo "Running mix deps.get to configure project dependencies..."
-    docker-compose run api mix deps.get
-}
-
-function create_database {
-    echo "Preparing database..."
-    docker-compose run api mix ecto.create
-}
-
 case $COMMAND in
   setup)
     build_containers
-    install_dependencies
+
+    echo "Running mix deps.get to configure project dependencies..."
+    docker-compose run api mix deps.get
     echo "Done."
   ;;
 
@@ -31,7 +23,8 @@ case $COMMAND in
   ;;
 
   create)
-    create_database
+    echo "Preparing database..."
+    docker-compose run api mix ecto.create
     echo "Done"
   ;;
 
@@ -39,6 +32,11 @@ case $COMMAND in
     echo "Starting all containers..."
     docker-compose up
     echo "Done"
+  ;;
+
+  console)
+    docker-compose run api iex -S mix phx.server
+    echo "Finished"
   ;;
 
   # Default option, display help information
@@ -50,15 +48,3 @@ case $COMMAND in
     echo "console    - Run the hangman console"
   ;;
 esac
-
-# setup phoenix
-# mix deps.get 
-
-# setup ecto
-# mix ecto.create
-
-# run server
-# mix phx.server
-
-# run console
-# iex -S mix phx.server
