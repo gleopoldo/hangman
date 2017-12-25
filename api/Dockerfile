@@ -17,4 +17,4 @@ COPY ./api /api
 # Set default workspace for container
 WORKDIR /api
 
-CMD 'bash'
+CMD mix phx.server
