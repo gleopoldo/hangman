@@ -1,3 +1,5 @@
 api/_build/
 api/deps/
 api/.mix
+api/.npm
+api/assets/node_modules/
