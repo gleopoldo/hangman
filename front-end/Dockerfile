@@ -12,6 +12,8 @@ RUN deluser --remove-home node && \
 
 # copies the project inside the workspace directory
 COPY ./front-end $app_path
+
+# Set default workspace for container
 WORKDIR $app_path
 
 # default command - access the console

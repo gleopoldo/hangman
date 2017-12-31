@@ -4,17 +4,19 @@
 COMMAND=$1
 
 function build_containers {
-    echo "Creating containers..."
-    docker-compose build
+    printf "Creating containers... "
+    docker-compose build &> /dev/null
+    printf "Created\n"
 }
 
 case $COMMAND in
   setup)
     build_containers
 
-    echo "Running mix deps.get to configure project dependencies..."
+    printf "Running mix deps.get to configure project dependencies... "
     docker-compose run api mix deps.get
-    echo "Done."
+
+    printf "Done."
   ;;
 
   build)
@@ -22,7 +24,7 @@ case $COMMAND in
     echo "Done."
   ;;
 
-  create)
+  db:create)
     echo "Preparing database..."
     docker-compose run api mix ecto.create
     echo "Done"
@@ -34,7 +36,7 @@ case $COMMAND in
     echo "Done"
   ;;
 
-  console)
+  phx:console)
     docker-compose run api iex -S mix phx.server
     echo "Finished"
   ;;
@@ -42,9 +44,9 @@ case $COMMAND in
   # Default option, display help information
   *)
     echo "Invalid option. The allowed ones are:"
-    echo "setup      - Setup the phoenix project"
-    echo "create     - Create the hangman database"
-    echo "run        - Run the hangman server"
-    echo "console    - Run the hangman console"
+    echo "setup          - Setup the hangman project"
+    echo "run            - Run the hangman server"
+    echo "db:create      - Create the hangman database"
+    echo "phx:console    - Run the hangman console"
   ;;
 esac
