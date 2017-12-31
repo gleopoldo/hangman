@@ -10,6 +10,8 @@ ARG app_path=/frontend
 RUN deluser --remove-home node && \
     adduser -u $user_id -h $app_path -D $username
 
+RUN npm install -g vue-cli
+
 # copies the project inside the workspace directory
 COPY ./front-end $app_path
 

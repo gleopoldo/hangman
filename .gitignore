@@ -6,3 +6,7 @@ api/assets/node_modules/
 api/.hex
 api/.ash_history
 api/priv
+front-end/.npm/
+front-end/.ash_history
+front-end/.vue-templates
+front-end/.config
