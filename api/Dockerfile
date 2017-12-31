@@ -3,18 +3,20 @@ FROM elixir:1.5.3-alpine
 # Default user settings
 ARG user_id
 ARG username
+ARG app_path=/api
 
 # Create a new user
-RUN adduser -u $user_id -D $username
+RUN adduser -h $app_path -u $user_id -D $username
+RUN apk update && apk add nodejs
 
 # Installing Phoenix
 RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new.ez \
     && mix local.hex --force
 
 # Copy project codebase into volume
-COPY ./api /api
+COPY ./api $app_path
 
 # Set default workspace for container
-WORKDIR /api
+WORKDIR $app_path
 
-CMD bash
+CMD sh
