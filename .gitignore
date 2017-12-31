@@ -3,3 +3,6 @@ api/deps/
 api/.mix
 api/.npm
 api/assets/node_modules/
+api/.hex
+api/.ash_history
+api/priv
