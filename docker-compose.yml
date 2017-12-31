@@ -40,6 +40,11 @@ services:
     container_name: hangman_frontend
     hostname: hangman_frontend
     user: hangman_frontend
+    command: 'npm run dev'
+    ports:
+      - 8080:8080
+    environment:
+      HOST: 0.0.0.0
     depends_on:
       - api
     volumes:
