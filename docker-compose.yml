@@ -1,18 +1,41 @@
 version: '3'
 
 services:
+
   api:
     build:
       context: .
       dockerfile: ./api/Dockerfile
+      args:
+        user_id: $UID
+        username: hangman_api
     container_name: hangman_api
+    hostname: hangman_api
+    user: hangman_api
     volumes:
     - ./api:/api
     ports:
     - 4000:4000
     depends_on:
-      - database
+    - database
+
+
   database:
     container_name: hangman_pgdb
     image: postgres:9.6
 
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./front-end/Dockerfile
+      args:
+        user_id: $UID
+        username: hangman_frontend
+    container_name: hangman_frontend
+    hostname: hangman_frontend
+    user: hangman_frontend
+    depends_on:
+      - api
+    volumes:
+    - ./front-end:/hangman
