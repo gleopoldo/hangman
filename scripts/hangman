@@ -3,25 +3,24 @@
 # The first arg provided here will be used as command option
 COMMAND=$1
 
-function build_containers {
-    printf "Creating containers... "
-    docker-compose build &> /dev/null
-    printf "Created\n"
-}
-
 case $COMMAND in
   setup)
-    build_containers
+    # Ensure that UID variable exists and is exported
+    export UID=$(id -u)
+
+    printf "Creating containers... "
+    docker-compose build &> /dev/null
+    printf "Created!\n"
 
     printf "Running mix deps.get to configure project dependencies... "
-    docker-compose run api mix deps.get
+    docker-compose run api 'mix deps.get' &> /dev/null
+    printf "Done!\n"
+    
+    printf "Building api assets with npm... "
+    docker-compose run api /bin/sh -c 'cd ./assets && npm install' &> /dev/null
+    printf "Done!\n"
 
-    printf "Done."
-  ;;
-
-  build)
-    build_containers
-    echo "Done."
+    printf "Finished! \\o/"
   ;;
 
   db:create)

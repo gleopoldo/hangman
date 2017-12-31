@@ -12,9 +12,7 @@ services:
     container_name: hangman_api
     hostname: hangman_api
     user: hangman_api
-    command: 'mix local.hex --force --if-missing &&
-              mix deps.get &&
-              mix phx.server'
+    command: 'mix phx.server'
     volumes:
     - ./api:/api
     ports:

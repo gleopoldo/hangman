@@ -7,7 +7,10 @@ ARG app_path=/api
 
 # Create a new user
 RUN adduser -h $app_path -u $user_id -D $username
-RUN apk update && apk add nodejs
+
+# Installing phoenix dependencies
+RUN apk update \
+    && apk add nodejs-current-npm inotify-tools
 
 # Installing Phoenix
 RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new.ez \
