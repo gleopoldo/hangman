@@ -12,6 +12,9 @@ services:
     container_name: hangman_api
     hostname: hangman_api
     user: hangman_api
+    command: 'mix local.hex --force --if-missing &&
+              mix deps.get &&
+              mix phx.server'
     volumes:
     - ./api:/api
     ports:
@@ -23,6 +26,8 @@ services:
   database:
     container_name: hangman_pgdb
     image: postgres:9.6
+    volumes:
+    - /var/lib/postgresql/data
 
 
   frontend:
