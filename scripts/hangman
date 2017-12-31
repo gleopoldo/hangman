@@ -20,31 +20,32 @@ case $COMMAND in
     docker-compose run api /bin/sh -c 'cd ./assets && npm install' &> /dev/null
     printf "Done!\n"
 
+    printf "Installing frontend dependencies... "
+    docker-compose run frontend /bin/sh -c 'npm install'
+    printf "Done!\n"
+
     printf "Finished! \\o/"
   ;;
 
   db:create)
-    echo "Preparing database..."
+    echo "Preparing database... "
     docker-compose run api mix ecto.create
     echo "Done"
   ;;
 
   start)
-    echo "Starting all containers..."
     docker-compose up
-    echo "Done"
   ;;
 
   phx:console)
     docker-compose run api iex -S mix phx.server
-    echo "Finished"
   ;;
 
   # Default option, display help information
   *)
     echo "Invalid option. The allowed ones are:"
     echo "setup          - Setup the hangman project"
-    echo "run            - Run the hangman server"
+    echo "start          - Start the hangman project (must run setup first!)"
     echo "db:create      - Create the hangman database"
     echo "phx:console    - Run the hangman console"
   ;;
