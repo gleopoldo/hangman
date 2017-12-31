@@ -9,6 +9,7 @@ services:
       args:
         user_id: $UID
         username: hangman_api
+        app_path: /api
     container_name: hangman_api
     hostname: hangman_api
     user: hangman_api
@@ -35,10 +36,11 @@ services:
       args:
         user_id: $UID
         username: hangman_frontend
+        app_path: /frontend
     container_name: hangman_frontend
     hostname: hangman_frontend
     user: hangman_frontend
     depends_on:
       - api
     volumes:
-    - ./front-end:/hangman
+    - ./front-end:/frontend
