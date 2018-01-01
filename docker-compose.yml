@@ -26,7 +26,7 @@ services:
     container_name: hangman_pgdb
     image: postgres:9.6
     volumes:
-    - /var/lib/postgresql/data
+    - /var/lib/docker/hangman_pgdb:/var/lib/postgresql/data
 
 
   frontend:
