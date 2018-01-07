@@ -9,7 +9,7 @@
 
     <div class="row">
       <div class="col-md-12">
-        <a href="#" class="btn btn-primary">Play</a>
+        <router-link to="/game" class="btn btn-primary">Play</router-link>
       </div>
     </div>
   </div>
