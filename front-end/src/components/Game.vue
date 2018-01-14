@@ -19,12 +19,12 @@ export default {
   name: 'Game',
   data: function () {
     return {
-      word: '' 
+      word: ''
     }
   },
   methods: {
-    loadNewWord: function() {
-      this.word = this.$http.get('0.0.0.0:4000')
+    loadNewWord: function () {
+      this.word = this.$http.get('api:4000')
     }
   },
   computed: {
