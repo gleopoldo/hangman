@@ -40,7 +40,7 @@ services:
     container_name: hangman_frontend
     hostname: hangman_frontend
     user: hangman_frontend
-    entrypoint: 'npm run dev'
+    entrypoint: 'yarn dev'
     ports:
       - 8080:8080
     environment:
