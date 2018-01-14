@@ -4,45 +4,76 @@
 COMMAND=$1
 
 case $COMMAND in
+
   setup)
+    # Stop any running containers
+    $0 stop
+
     # Ensure that UID variable exists and is exported
     export UID
 
-    printf "Creating containers... "
-    if ! [$(docker-compose build &> /dev/null)]; then
-      printf "Error while building your image... Run docker-compose build manually"
-      exit 1
-    fi
+    # Set an alias command, to simplify features access through
+    # command-line.
+    alias hangman='$PWD/scripts/hangman'
 
-    printf "Created!\n"
+    # Build containers
+    $0 clean   
+    $0 build
+    $0 db:create
 
-    printf "Running mix deps.get to configure project dependencies... "
-    docker-compose run \
-      --entrypoint '/bin/sh -c' api 'mix deps.get' &> /dev/null
-    printf "Done!\n"
-    
-    printf "Building api assets with npm... "
-    docker-compose run \
-      --entrypoint '/bin/sh -c' api 'cd ./assets && npm install' &> /dev/null
-    printf "Done!\n"
-
-    printf "Installing frontend dependencies... "
-    docker-compose run \
-      --entrypoint '/bin/sh -c' frontend 'yarn install'
-    printf "Done!\n"
-
-    printf "Finished! \\o/"
+    echo "Finished! \\o/"
+    echo "Now run hangman help to get usage information"
   ;;
 
   db:create)
-    echo "Preparing database... "
+    echo -n "Preparing database... "
     docker-compose run \
       --entrypoint '/bin/sh -c' api 'mix ecto.create'
     echo "Done"
   ;;
 
   start)
+    echo "Starting servers... "
     docker-compose up
+    echo "Bye :)"
+  ;;
+
+  stop)
+    echo -n "Stopping hangman servers... "
+    docker-compose stop
+    echo "Done."
+  ;;
+
+  clean)
+    echo -n "Cleaning all containers... "
+    docker-compose rm
+    echo "Done"
+  ;;
+
+  build)
+    # Attempts to build the docker containers. It will stand with
+    # a production environment, and all other development needs
+    # must override the default entrypoint
+    #
+    # This command returns if the build was not successful
+    echo -n "Creating containers... "
+    docker-compose build
+    echo "Created!"
+
+    # Install phoenix dependencies into the api container
+    echo -n "Running mix deps.get to configure project dependencies... "
+    docker-compose run \
+      --entrypoint '/bin/sh -c' api 'mix deps.get' &> /dev/null
+
+    docker-compose run \
+      --entrypoint '/bin/sh -c' api 'cd ./assets && npm install' &> /dev/null
+    echo "Done!"
+    
+    # Install frontend app dependencies into the frontend container
+    echo -n "Installing frontend dependencies... "
+    docker-compose run \
+      --entrypoint '/bin/sh -c' frontend 'yarn install'
+    echo "Done!"
   ;;
 
   phx:console)
@@ -55,12 +86,17 @@ case $COMMAND in
       --entrypoint '/bin/sh' frontend
   ;;
 
+
   # Default option, display help information
   *)
     echo "Invalid option. The allowed ones are:"
     echo "setup          - Setup the hangman project"
-    echo "start          - Start the hangman project (must run setup first!)"
+    echo "start          - Start the hangman"
+    echo "stop           - Stop the hangman"
+    echo "build          - Build hangman containers"
+    echo "clean          - Kills all running containers and deletes them"
     echo "db:create      - Create the hangman database"
-    echo "phx:console    - Run the hangman console"
+    echo "phx:console    - Run the hangman console inside api container"
+    echo "npm:console    - Run the hangman console inside frontend container"
   ;;
 esac
