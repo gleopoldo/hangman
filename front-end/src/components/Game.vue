@@ -18,7 +18,14 @@
 export default {
   name: 'Game',
   data: function () {
-    return {}
+    return {
+      word: '' 
+    }
+  },
+  methods: {
+    loadNewWord: function() {
+      this.word = this.$http.get('0.0.0.0:4000')
+    }
   },
   computed: {
     alphabet: function () {
@@ -30,6 +37,10 @@ export default {
         (_, index) => String.fromCharCode(firstLetter + index)
       )
     }
+  },
+  created: function () {
+    console.log('created')
+    this.loadNewWord()
   }
 }
 </script>
