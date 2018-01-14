@@ -62,8 +62,7 @@ case $COMMAND in
 
     # Install phoenix dependencies into the api container
     echo -n "Running mix deps.get to configure project dependencies... "
-    docker-compose run \
-      --entrypoint '/bin/sh -c' api 'mix deps.get' &> /dev/null
+    $0 phx:deps &> /dev/null
 
     docker-compose run \
       --entrypoint '/bin/sh -c' api 'cd ./assets && npm install' &> /dev/null
@@ -86,6 +85,11 @@ case $COMMAND in
       --entrypoint '/bin/sh' frontend
   ;;
 
+  phx:deps)
+    docker-compose run \
+      --entrypoint '/bin/sh -c' api 'mix deps.get'
+  ;;
+
 
   # Default option, display help information
   *)
@@ -97,6 +101,7 @@ case $COMMAND in
     echo "clean          - Kills all running containers and deletes them"
     echo "db:create      - Create the hangman database"
     echo "phx:console    - Run the hangman console inside api container"
+    echo "phx:deps       - Install phoenix deps"
     echo "npm:console    - Run the hangman console inside frontend container"
   ;;
 esac
