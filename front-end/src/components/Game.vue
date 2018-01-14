@@ -5,6 +5,9 @@
     </header>
     <div class="row">
       <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <h1>{{ this.word }}</h1>
+      </div>
       <div class="alphabet-board col-md-8">
         <div v-for="letter in alphabet" class="letter-board">
           {{ letter }}
@@ -24,7 +27,11 @@ export default {
   },
   methods: {
     loadNewWord: function () {
-      this.word = this.$http.get('api:4000')
+      this.$http.get('http://localhost:4000').then(response => {
+        this.word = JSON.parse(response.body).word
+      }, response => {
+        console.log('Shit happened')
+      })
     }
   },
   computed: {

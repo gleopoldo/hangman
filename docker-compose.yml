@@ -20,6 +20,10 @@ services:
     - 4000:4000
     depends_on:
     - database
+    networks:
+      hangman:
+        aliases:
+        - api
 
 
   database:
@@ -27,6 +31,8 @@ services:
     image: postgres:9.6
     volumes:
     - /var/lib/docker/hangman_pgdb:/var/lib/postgresql/data
+    networks:
+    - hangman
 
 
   frontend:
@@ -39,7 +45,7 @@ services:
         app_path: /frontend
     container_name: hangman_frontend
     hostname: hangman_frontend
-    user: hangman_frontend
+    user: root
     entrypoint: 'yarn dev'
     ports:
       - 8080:8080
@@ -47,5 +53,10 @@ services:
       HOST: 0.0.0.0
     depends_on:
       - api
+    networks:
+      - hangman
     volumes:
     - ./front-end:/frontend
+
+networks:
+  hangman:

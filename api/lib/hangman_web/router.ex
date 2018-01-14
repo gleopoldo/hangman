@@ -10,6 +10,7 @@ defmodule HangmanWeb.Router do
   end
 
   pipeline :api do
+    plug CORSPlug, [origin: "*"]
     plug :accepts, ["json"]
   end
 
@@ -17,5 +18,6 @@ defmodule HangmanWeb.Router do
     pipe_through :api
 
     get "/", PageController, :index
+    options "/", PageController, :options
   end
 end
