@@ -6,20 +6,19 @@ ARG username
 ARG app_path=/api
 
 # Create a new user
-RUN adduser -h $app_path -u $user_id -D $username
-
 # Installing phoenix dependencies
 RUN apk update \
-    && apk add nodejs-current-npm inotify-tools
-
-# Installing Phoenix
-RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new.ez \
+    && apk add nodejs-current-npm inotify-tools \
+    && adduser -h $app_path -u $user_id -D $username \
+    && mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new.ez \
     && mix local.hex --force
 
+USER $user_id
+
 # Copy project codebase into volume
-COPY ./api $app_path
+ADD ./api $app_path
 
 # Set default workspace for container
 WORKDIR $app_path
 
-CMD sh
+ENTRYPOINT /bin/sh

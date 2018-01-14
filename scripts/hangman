@@ -6,22 +6,29 @@ COMMAND=$1
 case $COMMAND in
   setup)
     # Ensure that UID variable exists and is exported
-    export UID=$(id -u)
+    export UID
 
     printf "Creating containers... "
-    docker-compose build &> /dev/null
+    if ! [$(docker-compose build &> /dev/null)]; then
+      printf "Error while building your image... Run docker-compose build manually"
+      exit 1
+    fi
+
     printf "Created!\n"
 
     printf "Running mix deps.get to configure project dependencies... "
-    docker-compose run api 'mix deps.get' &> /dev/null
+    docker-compose run \
+      --entrypoint '/bin/sh -c' api 'mix deps.get' &> /dev/null
     printf "Done!\n"
     
     printf "Building api assets with npm... "
-    docker-compose run api /bin/sh -c 'cd ./assets && npm install' &> /dev/null
+    docker-compose run \
+      --entrypoint '/bin/sh -c' api 'cd ./assets && npm install' &> /dev/null
     printf "Done!\n"
 
     printf "Installing frontend dependencies... "
-    docker-compose run frontend /bin/sh -c 'npm install'
+    docker-compose run \
+      --entrypoint '/bin/sh -c' frontend 'yarn install'
     printf "Done!\n"
 
     printf "Finished! \\o/"
@@ -29,7 +36,8 @@ case $COMMAND in
 
   db:create)
     echo "Preparing database... "
-    docker-compose run api mix ecto.create
+    docker-compose run \
+      --entrypoint '/bin/sh -c' api 'mix ecto.create'
     echo "Done"
   ;;
 
@@ -38,7 +46,13 @@ case $COMMAND in
   ;;
 
   phx:console)
-    docker-compose run api iex -S mix phx.server
+    docker-compose run \
+      --entrypoint '/bin/sh -c' api 'iex -S mix phx.server'
+  ;;
+
+  npm:console)
+    docker-compose run \
+      --entrypoint '/bin/sh' frontend
   ;;
 
   # Default option, display help information

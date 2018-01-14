@@ -7,16 +7,18 @@ ARG app_path=/frontend
 
 # Remove nodejs image default node user (it causes UID conflicts)
 # and sets the default one, using the given uid
-RUN deluser --remove-home node && \
+RUN apk update && apk add yarn && \
+    deluser --remove-home node && \
     adduser -u $user_id -h $app_path -D $username
 
-RUN npm install -g vue-cli
+USER $user_id
 
 # copies the project inside the workspace directory
-COPY ./front-end $app_path
+ADD ./front-end $app_path
 
 # Set default workspace for container
 WORKDIR $app_path
 
+
 # default command - access the console
-CMD /bin/sh
+ENTRYPOINT /bin/sh

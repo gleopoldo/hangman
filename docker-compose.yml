@@ -13,7 +13,7 @@ services:
     container_name: hangman_api
     hostname: hangman_api
     user: hangman_api
-    command: 'mix phx.server'
+    entrypoint: "mix phx.server"
     volumes:
     - ./api:/api
     ports:
@@ -40,7 +40,7 @@ services:
     container_name: hangman_frontend
     hostname: hangman_frontend
     user: hangman_frontend
-    command: 'npm run dev'
+    entrypoint: 'npm run dev'
     ports:
       - 8080:8080
     environment:
