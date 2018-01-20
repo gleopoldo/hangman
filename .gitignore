@@ -12,3 +12,4 @@ front-end/.vue-templates
 front-end/.config
 front-end/node_modules
 front-end/.cache
+front-end/test/unit/coverage/
