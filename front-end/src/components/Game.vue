@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import requestWord from "./adapters/WordRequester"
+
 export default {
   name: 'Game',
   data: function () {
