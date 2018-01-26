@@ -1,20 +1,17 @@
-import request from 'request'
+import axios from 'axios'
+axios.defaults.adatper = require('axios/lib/adapters/http');
 
-function requestWord() {
-    //let word = ''
-    //vue_instance.get('http://localhost:4000').then(response => {
-      //word = JSON.parse(response.body).word
-    //})
-  // return word
-    
-    let word = ''
-    request('http://localhost:4000', function(error, response, body){
-      word = JSON.parse(body).word
-      console.log(body)
-    })
+function requestWord(callback) {
+  var word;
 
-    return word
+  axios.request('http://localhost:4000')
+    .then((response) => {
+       word = response.data
+       console.log(response.data)
+    }).catch((error) => console.log(error))
 
+  console.log("AFTER RESPONSE", word)
+  return word
 }
 
 export default requestWord;
