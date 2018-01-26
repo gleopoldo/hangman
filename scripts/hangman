@@ -91,7 +91,7 @@ case $COMMAND in
       --entrypoint '/bin/sh -c' api 'mix deps.get'
   ;;
 
-  test)
+  npm:unit)
     docker-compose run \
       --entrypoint '/bin/sh -c' frontend 'npm run unit'
   ;;
@@ -104,11 +104,11 @@ case $COMMAND in
     echo "clean          - Kills all running containers and deletes them"
     echo "db:create      - Create the hangman database"
     echo "npm:console    - Run the hangman console inside frontend container"
+    echo "npm:unit       - Runs test suites"
     echo "phx:console    - Run the hangman console inside api container"
     echo "phx:deps       - Install phoenix deps"
     echo "setup          - Setup the hangman project"
     echo "start          - Start the hangman"
     echo "stop           - Stop the hangman"
-    echo "test           - Runs test suites"
   ;;
 esac
