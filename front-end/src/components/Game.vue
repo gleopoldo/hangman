@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import requestWord from "./adapters/WordRequester"
+import requestWord from './adapters/WordRequester'
 
 export default {
   name: 'Game',
@@ -28,12 +28,15 @@ export default {
     }
   },
   methods: {
-    loadNewWord: function () {
-      this.$http.get('http://localhost:4000').then(response => {
-        this.word = JSON.parse(response.body).word
-      }, response => {
-        console.log('Shit happened')
-      })
+    loadNewWord: async function () {
+      this.word = await requestWord()
+
+
+      /*this.$http.get('http://localhost:4000').then(response => {*/
+        /*this.word = JSON.parse(response.body).word*/
+      /*}, response => {*/
+        /*console.log('Shit happened')*/
+      /*})*/
     }
   },
   computed: {
