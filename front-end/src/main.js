@@ -3,11 +3,18 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuex from 'vuex'
+import WordStore from '@/components/store/WordStore'
 import VueResource from 'vue-resource'
 
 Vue.config.productionTip = false
 
 Vue.use(VueResource)
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+  modules: WordStore
+})
 
 /* eslint-disable no-new */
 new Vue({
