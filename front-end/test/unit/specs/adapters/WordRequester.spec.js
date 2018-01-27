@@ -12,4 +12,13 @@ describe('WordRequester', () => {
 
     expect(await requestWord()).toEqual('some-word')
   })
+
+  it('should return an empty string on network error', async () => {
+    var mock = new MockAdapter(axios)
+
+    mock.onGet('http://localhost:4000')
+      .networkError('Some bad error occurred')
+
+    expect(await requestWord()).toEqual('')
+  })
 })
