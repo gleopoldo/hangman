@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+const API = 'http://localhost:4000'
 /**
  * Attempts to request a new word from an external API
  *
@@ -9,7 +10,7 @@ import axios from 'axios'
 let requestWord = async () => {
   let word = ''
 
-  await axios.get('http://localhost:4000', { responseType: 'json' })
+  await axios.get(API, { responseType: 'json' })
     .then((response) => {
       word = response.data.word 
     })
