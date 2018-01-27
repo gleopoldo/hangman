@@ -9,8 +9,8 @@
         <h1>{{ this.word }}</h1>
       </div>
       <div class="alphabet-board col-md-8">
-        <div v-for="letter in alphabet" class="letter-board">
-          {{ letter }}
+        <div v-for="letter in alphabet">
+          <letter :letter="letter"></letter>
         </div>
       </div>
     </div>
@@ -19,9 +19,13 @@
 
 <script>
 import requestWord from './adapters/WordRequester'
+import Letter from '@/components/Letter'
 
 export default {
   name: 'Game',
+  components: {
+    Letter
+  },
   data: function () {
     return {
       word: ''
@@ -30,13 +34,6 @@ export default {
   methods: {
     loadNewWord: async function () {
       this.word = await requestWord()
-
-
-      /*this.$http.get('http://localhost:4000').then(response => {*/
-        /*this.word = JSON.parse(response.body).word*/
-      /*}, response => {*/
-        /*console.log('Shit happened')*/
-      /*})*/
     }
   },
   computed: {
@@ -77,19 +74,5 @@ header
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
-.letter-board
-  font-family: 'Alfa Slab One', cursive;
-  font-size: 3em;
-  color: black
-  padding: 1%;
-  margin: 5px;
-  background: url('../assets/square_wood0001.png');
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  float: left;
-  width: 100px;
-  height: 100px;
 
 </style>
