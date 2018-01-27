@@ -1,3 +1,7 @@
+import axios from 'axios'
+
+const API = 'http://localhost:4000'
+
 const WordStore = {
   state: {
     word: ''
@@ -6,6 +10,18 @@ const WordStore = {
   mutations: {
     setWord (state, {word}) {
       if(word) { state.word = word }
+    }
+  },
+
+  actions: {
+    async renewWord ({ commit }) {
+      await axios.get(API, { responseType: 'json' })
+        .then((response) => {
+          commit('setWord', response.data.word)
+        })
+        .catch((error) => {
+          console.log(`Error on fetching word on api ${error}`)
+        })
     }
   }
 }
