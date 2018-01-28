@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-md-4"></div>
       <div class="col-md-4">
-        <h1>{{ this.word }}</h1>
+        <h1>{{ word }}</h1>
       </div>
       <div class="alphabet-board col-md-8">
         <div v-for="letter in alphabet">
@@ -26,16 +26,6 @@ export default {
   components: {
     Letter
   },
-  data: function () {
-    return {
-      word: ''
-    }
-  },
-  methods: {
-    loadNewWord: async function () {
-      this.word = await requestWord()
-    }
-  },
   computed: {
     alphabet: function () {
       let firstLetter = 'A'.charCodeAt(0)
@@ -45,11 +35,14 @@ export default {
         new Array(lastLetter - firstLetter + 1),
         (_, index) => String.fromCharCode(firstLetter + index)
       )
+    },
+    word: function () {
+      return this.$store.getters.getWord
     }
   },
   created: function () {
-    console.log('created')
-    this.loadNewWord()
+    this.$store.dispatch('renewWord')
+    setTimeout(10000)
   }
 }
 </script>

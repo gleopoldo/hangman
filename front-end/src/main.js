@@ -7,19 +7,23 @@ import Vuex from 'vuex'
 import WordStore from '@/components/store/WordStore'
 import VueResource from 'vue-resource'
 
+
 Vue.config.productionTip = false
 
 Vue.use(VueResource)
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  modules: WordStore
+  modules: {
+    words: WordStore
+  }
 })
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
