@@ -4,11 +4,12 @@
         <h1>Hangman</h1>
     </header>
     <div class="row">
-      <div class="col-md-4"></div>
-      <div class="col-md-4">
-        <h1>{{ word }}</h1>
+      <div class="col-sm-12">
+        <word></word>
       </div>
-      <div class="alphabet-board col-md-8">
+    </div>
+    <div class="row">
+      <div class="alphabet-board col-md-12">
         <div v-for="letter in alphabet">
           <letter :letter="letter"></letter>
         </div>
@@ -20,11 +21,13 @@
 <script>
 import requestWord from './adapters/WordRequester'
 import Letter from '@/components/Letter'
+import Word from '@/components/Word'
 
 export default {
   name: 'Game',
   components: {
-    Letter
+    Letter,
+    Word
   },
   computed: {
     alphabet: function () {
@@ -42,7 +45,6 @@ export default {
   },
   created: function () {
     this.$store.dispatch('renewWord')
-    setTimeout(10000)
   }
 }
 </script>

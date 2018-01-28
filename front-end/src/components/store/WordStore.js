@@ -4,7 +4,8 @@ const API = 'http://localhost:4000'
 
 const WordStore = {
   state: {
-    word: ''
+    word: '',
+    attempts: []
   },
 
   mutations: {
@@ -16,6 +17,14 @@ const WordStore = {
   getters: {
     getWord (state) {
       return state.word
+    },
+
+    wordWithAttempts ({word, attempts}) {
+      let characters = word.split('')
+
+      return characters.map((character) => {
+        return attempts.includes(character) ? character : '_'
+      })
     }
   },
 
