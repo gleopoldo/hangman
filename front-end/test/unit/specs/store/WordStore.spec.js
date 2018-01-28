@@ -27,6 +27,16 @@ describe('WordStore.js', () => {
     })
   })
 
+  describe('getWord()', () => {
+    it('returns the word from store state', () => {
+      let state = { word: 'some-word' }
+
+      let fetched = WordStore.getters.getWord(state)
+
+      expect(fetched).toEqual(state.word)
+    })
+  })
+
   describe('async renewWord()', () => {
     it('renews the context store word', async () => {
       const setWord = jest.fn()
@@ -37,7 +47,7 @@ describe('WordStore.js', () => {
         .reply(200, JSON.stringify({ word: 'some-word' }))
 
       await WordStore.actions.renewWord(context)
-      expect(setWord).toHaveBeenCalledWith('setWord', 'some-word')
+      expect(setWord).toHaveBeenCalledWith('setWord', { word: 'some-word' })
     })
 
     it('does not renew the context on network error', async () => {

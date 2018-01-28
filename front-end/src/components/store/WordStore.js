@@ -13,11 +13,17 @@ const WordStore = {
     }
   },
 
+  getters: {
+    getWord (state) {
+      return state.word
+    }
+  },
+
   actions: {
     async renewWord ({ commit }) {
       await axios.get(API, { responseType: 'json' })
         .then((response) => {
-          commit('setWord', response.data.word)
+          commit('setWord', { word: response.data.word })
         })
         .catch((error) => {
           console.log(`Error on fetching word on api ${error}`)
