@@ -12,9 +12,9 @@ describe('Word.vue', () => {
       mocks: {
         $store: {
           getters: {
-            wordWithAttempts: (_) => {
+            wordWithAttempts: ((_) => {
               return ['_', 'a', 'l', 'l']
-            }
+            })()
           }
         }
       },

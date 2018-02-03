@@ -1,6 +1,6 @@
 <template>
   <div class="word">
-    <span v-for="letter in word"> {{ letter }} </span>
+    <span v-for="letter in word" class="single-letter">{{ letter }}</span>
   </div>
 </template>
 
@@ -18,8 +18,9 @@ export default {
 .word
   margin-top: 70px
 
-  span
+  .single-letter
     display: inline
     font-size: 3em
-    font-family: 'Alfa Slab One', cursive;
+    font-family: 'Alfa Slab One', cursive
+    margin-left: 5px
 </style>
