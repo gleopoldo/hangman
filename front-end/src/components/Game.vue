@@ -8,12 +8,11 @@
         <word></word>
       </div>
     </div>
+    <hr>
     <div class="row">
-      <div class="alphabet-board col-md-12">
-        <div v-for="letter in alphabet">
-          <letter :letter="letter"></letter>
+        <div class="col-sm-11 col-md-11 alphabet-board">
+          <letter v-for="letter in alphabet" :letter="letter"></letter>
         </div>
-      </div>
     </div>
   </div>
 </template>
@@ -65,7 +64,7 @@ header
     color: #65300a;
 
 .alphabet-board
-  margin-top: 50px;
+  margin: 20px auto 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

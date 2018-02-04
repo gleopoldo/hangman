@@ -33,7 +33,7 @@ describe('Letter.vue', () => {
 
   it('requires a non-empty letter prop', () => {
     const Constructor = Vue.extend(Letter)
-    const letterComponent = new Constructor().$mount()
+    const letterComponent = new Constructor({ propsData: { letter: 'A' }}).$mount()
 
     const letterProp = letterComponent.$options.props.letter
 
@@ -41,13 +41,65 @@ describe('Letter.vue', () => {
     expect(letterProp.type).toBe(String)
   })
 
-  it('inserts a new attempt with current letter on click', () => {
+  it('is not clicked yet', () => {
     const wrapper = mount(Letter, { store, localVue, 
-      propsData: { letter: 'A' },
+      propsData: { letter: 'a' },
     })
 
-    wrapper.find('span.letter').trigger('click')
+    expect(wrapper.vm.clicked).toBe(false)
+    expect(wrapper.find('span.letter').is('.clicked')).toBe(false)
+  })
 
-    expect(mutations.makeGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
+  describe('on click', () => {
+    it('inserts a new attempt with current letter', () => {
+      const wrapper = mount(Letter, { store, localVue, 
+        propsData: { letter: 'A' },
+      })
+
+      wrapper.find('span.letter').trigger('click')
+
+      expect(mutations.makeGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
+    })
+
+    it('always attempts current letter with uppercase', () => {
+      const wrapper = mount(Letter, { store, localVue, 
+        propsData: { letter: 'a' },
+      })
+
+      wrapper.find('span.letter').trigger('click')
+
+      expect(mutations.makeGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
+    })
+
+    it('changes component state to clicked', () => {
+      const wrapper = mount(Letter, { store, localVue, 
+        propsData: { letter: 'a' },
+      })
+
+      wrapper.find('span.letter').trigger('click')
+
+      expect(wrapper.vm.clicked).toBe(true)
+    })
+
+    it('does not make an attempt if already clicked', () => {
+      const wrapper = mount(Letter, { store, localVue, 
+        propsData: { letter: 'a' },
+      })
+
+      wrapper.setData({ clicked: true })
+      wrapper.find('span.letter').trigger('click')
+
+      expect(mutations.makeGuess).not.toHaveBeenCalled()
+    })
+
+    it('adds clicked class to span', () => {
+      const wrapper = mount(Letter, { store, localVue, 
+        propsData: { letter: 'a' },
+      })
+
+      wrapper.find('span.letter').trigger('click')
+
+      expect(wrapper.find('span.letter').is('.clicked')).toBe(true)
+    })
   })
 })
