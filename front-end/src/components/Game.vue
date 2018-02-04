@@ -4,14 +4,14 @@
         <h1>Hangman</h1>
     </header>
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-12 word-board">
         <word></word>
       </div>
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-11 col-md-11 alphabet-board">
-          <letter v-for="letter in alphabet" :letter="letter"></letter>
+        <div class="col-sm-11 col-md-6 alphabet-board">
+          <letter v-for="letter in alphabet" :letter="letter" :key="letter"></letter>
         </div>
     </div>
   </div>
@@ -64,9 +64,11 @@ header
     color: #65300a;
 
 .alphabet-board
-  margin: 20px auto 0;
+  margin: 60px auto 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 
+.word-board
+  margin-top: 10px
 </style>

@@ -37,9 +37,8 @@ export default {
 
 <style lang="sass">
 .letter-box
-  height: 120px
-  width: 100px
-  margin-left: 6px
+  height: 90px
+  width: 80px
   position: relative
 
   .letter
@@ -47,12 +46,12 @@ export default {
     bottom: 0
     left: 0
     font-family: 'Alfa Slab One', cursive;
-    font-size: 3em;
-    padding: 1%;
+    font-size: 2.5em;
+    padding: 10%;
     margin: 5px;
     float: left;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 75px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -65,17 +64,20 @@ export default {
     background-image: url('../assets/darkness_square.png');
     color: white;
 
-  .letter:not(.clicked):hover
+.letter-box:hover .letter:not(.clicked)
     background-image: url('../assets/darkness_square.png');
     animation-name: moveup;
     animation-duration: 0.15s;
     color: white
+    bottom: 5px
 
 @keyframes moveup
   0%
     color: black
+    bottom: 0
   100%
     color: white
+    bottom: 5px
 
     
 </style>
