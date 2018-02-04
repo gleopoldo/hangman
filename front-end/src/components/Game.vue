@@ -3,14 +3,21 @@
       <header class="nav">
         <h1>Hangman</h1>
     </header>
-    <div class="row">
-      <div class="col-md-4"></div>
-      <div class="col-md-4">
-        <h1>{{ this.word }}</h1>
+    <div v-show="gameOver">
+      <div class="game-over">
+        GAME-OVER
       </div>
-      <div class="alphabet-board col-md-8">
-        <div v-for="letter in alphabet">
-          <letter :letter="letter"></letter>
+    </div>
+    <div v-show="!gameOver">
+      <div class="row">
+        <div class="col-sm-12 word-board">
+          <word></word>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-sm-11 col-md-6 alphabet-board">
+          <letter v-for="letter in alphabet" :letter="letter" :key="letter"></letter>
         </div>
       </div>
     </div>
@@ -20,21 +27,13 @@
 <script>
 import requestWord from './adapters/WordRequester'
 import Letter from '@/components/Letter'
+import Word from '@/components/Word'
 
 export default {
   name: 'Game',
   components: {
-    Letter
-  },
-  data: function () {
-    return {
-      word: ''
-    }
-  },
-  methods: {
-    loadNewWord: async function () {
-      this.word = await requestWord()
-    }
+    Letter,
+    Word
   },
   computed: {
     alphabet: function () {
@@ -45,11 +44,18 @@ export default {
         new Array(lastLetter - firstLetter + 1),
         (_, index) => String.fromCharCode(firstLetter + index)
       )
+    },
+
+    word: function () {
+      return this.$store.getters.getWord
+    },
+
+    gameOver: function () {
+      return this.$store.getters.isGameOver
     }
   },
   created: function () {
-    console.log('created')
-    this.loadNewWord()
+    this.$store.dispatch('renewWord')
   }
 }
 </script>
@@ -70,9 +76,20 @@ header
     color: #65300a;
 
 .alphabet-board
-  margin-top: 50px;
+  margin: 60px auto 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
+.word-board
+  margin-top: 10px
+
+.game-over
+  height: 100%;
+  width: 100%;
+  margin-top: 250px;
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 3em;
+  color: #940000
 
 </style>

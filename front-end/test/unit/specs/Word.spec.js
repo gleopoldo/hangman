@@ -1,21 +1,26 @@
-import Vue from 'vue'
+import Vuex from 'vuex'
+import { shallow, createLocalVue } from 'vue-test-utils'
 import Word from '@/components/Word'
 
+const localVue = createLocalVue()
+
+localVue.use(Vuex)
+
 describe('Word.vue', () => {
-  it('hides the word on mounting', () => {
-    const Constructor = Vue.extend(Word)
-    const wordComponent = new Constructor({ propsData: { word: 'word' } }).$mount()
+  it('returns the store word with attempts', () => {
+    const wrapper = shallow(Word, {
+      mocks: {
+        $store: {
+          getters: {
+            wordWithAttempts: ((_) => {
+              return ['_', 'a', 'l', 'l']
+            })()
+          }
+        }
+      },
+      localVue
+    })
 
-    expect(wordComponent.$el.textContent).toEqual('')
-  })
-
-  it('validates presence of word prop', () => {
-    const Constructor = Vue.extend(Word)
-    const wordComponent = new Constructor().$mount()
-
-    const wordProp = wordComponent.$options.props.word
-
-    expect(wordProp.required).toBeTruthy()
-    expect(wordProp.type).toEqual(String)
+    expect(wrapper.text().trim()).toEqual('_all')
   })
 })
