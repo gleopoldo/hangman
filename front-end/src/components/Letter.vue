@@ -1,5 +1,5 @@
 <template>
-  <span class="letter">{{ letter }}</span>
+  <span class="letter" @click="makeGuess">{{ letter }}</span>
 </template>
 
 <script>
@@ -9,6 +9,11 @@ export default {
     letter: {
       type: String,
       required: true
+    }
+  },
+  methods: {
+    makeGuess () {
+      this.$store.commit('makeGuess', {letter: this.letter})
     }
   }
 }

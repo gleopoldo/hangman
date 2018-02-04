@@ -14,12 +14,12 @@ describe('WordStore.js', () => {
   })
 
   describe('setWord()', () => {
-    it('sets a new word', () => {
+    it('sets a new word with uppercase', () => {
       let state = { word: '' }
 
       WordStore.mutations.setWord(state, { word: 'new-word' })
 
-      expect(state.word).toEqual('new-word')
+      expect(state.word).toEqual('NEW-WORD')
     })
 
     it('does not update state if a new word is not given', () => {
@@ -28,6 +28,32 @@ describe('WordStore.js', () => {
       WordStore.mutations.setWord(state, {})
 
       expect(state.word).toEqual('some-word')
+    })
+  })
+
+  describe('makeGuess()', () => {
+    it('adds a letter into the attempts', () => {
+      let state = { attempts: [] }
+
+      WordStore.mutations.makeGuess(state, {letter: 'A'})
+
+      expect(state.attempts).toEqual(['A'])
+    })
+
+    it('keeps old attempts', () => {
+      let state = { attempts: ['Z'] }
+
+      WordStore.mutations.makeGuess(state, {letter: 'A'})
+
+      expect(state.attempts).toEqual(['Z', 'A'])
+    })
+
+    it('does not duplicate attempts', () => {
+      let state = { attempts: ['Z'] }
+
+      WordStore.mutations.makeGuess(state, {letter: 'Z'})
+
+      expect(state.attempts).toEqual(['Z'])
     })
   })
 

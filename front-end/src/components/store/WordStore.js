@@ -10,7 +10,13 @@ const WordStore = {
 
   mutations: {
     setWord (state, {word}) {
-      if(word) { state.word = word }
+      if(word) { state.word = word.toUpperCase() }
+    },
+
+    makeGuess (state, {letter}) {
+      if(!state.attempts.includes(letter)){
+        state.attempts.push(letter)
+      }
     }
   },
 
