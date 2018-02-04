@@ -31,11 +31,11 @@ describe('WordStore.js', () => {
     })
   })
 
-  describe('makeGuess()', () => {
+  describe('registerGuess()', () => {
     it('adds a letter into the attempts', () => {
       let state = { attempts: [] }
 
-      WordStore.mutations.makeGuess(state, {letter: 'A'})
+      WordStore.mutations.registerGuess(state, {letter: 'A'})
 
       expect(state.attempts).toEqual(['A'])
     })
@@ -43,7 +43,7 @@ describe('WordStore.js', () => {
     it('keeps old attempts', () => {
       let state = { attempts: ['Z'] }
 
-      WordStore.mutations.makeGuess(state, {letter: 'A'})
+      WordStore.mutations.registerGuess(state, {letter: 'A'})
 
       expect(state.attempts).toEqual(['Z', 'A'])
     })
@@ -51,7 +51,7 @@ describe('WordStore.js', () => {
     it('does not duplicate attempts', () => {
       let state = { attempts: ['Z'] }
 
-      WordStore.mutations.makeGuess(state, {letter: 'Z'})
+      WordStore.mutations.registerGuess(state, {letter: 'Z'})
 
       expect(state.attempts).toEqual(['Z'])
     })
@@ -64,6 +64,26 @@ describe('WordStore.js', () => {
       let fetched = WordStore.getters.getWord(state)
 
       expect(fetched).toEqual(state.word)
+    })
+  })
+
+  describe('contains(letter)', () => {
+    it('returns true when word contains given letter', () => {
+      let letter = 's'
+      let state = { word: 'some-word' }
+
+      let contains = WordStore.getters.contains(state)(letter)
+
+      expect(contains).toBe(true)
+    })
+
+    it('returns false when word does not contains given letter', () => {
+      let letter = 'z'
+      let state = { word: 'some-word' }
+
+      let contains = WordStore.getters.contains(state)(letter)
+
+      expect(contains).toBe(false)
     })
   })
 

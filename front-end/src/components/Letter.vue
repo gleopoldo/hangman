@@ -1,6 +1,6 @@
 <template>
   <div class="letter-box">
-    <span class="letter" :class="clickedClass" @click="makeGuess">{{ letter }}</span>
+    <span class="letter" :class="clickedClass" @click="guess">{{ letter }}</span>
   </div>
 </template>
 
@@ -19,13 +19,20 @@ export default {
     }
   },
   methods: {
-    makeGuess () {
-      if(!this.clicked){
-        this.$store.commit('makeGuess', {letter: this.letter.toUpperCase()})
-      }
-
+    guess () {
+      if(!this.clicked) { this.submitGuess() }
       this.clicked = true
     },
+
+    submitGuess () {
+      let letterPayload = { letter: this.letter.toUpperCase() }
+
+      this.$store.commit('registerGuess', letterPayload)
+
+      if (!this.$store.getters.contains(this.letter)) {
+        this.$store.commit('registerWrongAttempt', letterPayload)
+      } 
+    }
   },
   computed: {
     clickedClass () {

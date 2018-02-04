@@ -5,7 +5,7 @@ const API = 'http://localhost:4000'
 const WordStore = {
   state: {
     word: '',
-    attempts: []
+    attempts: [],
   },
 
   mutations: {
@@ -13,7 +13,7 @@ const WordStore = {
       if(word) { state.word = word.toUpperCase() }
     },
 
-    makeGuess (state, {letter}) {
+    registerGuess (state, {letter}) {
       if(!state.attempts.includes(letter)){
         state.attempts.push(letter)
       }
@@ -21,6 +21,12 @@ const WordStore = {
   },
 
   getters: {
+    contains ({word}) {
+      return (letter) => {
+        return word.includes(letter) 
+      }
+    },
+
     getWord (state) {
       return state.word
     },

@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import Vuex from 'vuex'
 import WordStore from '@/components/store/WordStore'
+import GameStore from '@/components/store/GameStore'
 import VueResource from 'vue-resource'
 
 
@@ -15,7 +16,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
-    words: WordStore
+    words: WordStore,
+    game: GameStore
   }
 })
 

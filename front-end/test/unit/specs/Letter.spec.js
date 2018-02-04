@@ -10,15 +10,23 @@ localVue.use(Vuex)
 describe('Letter.vue', () => {
   let store
   let mutations
+  let getters
+  let contains = jest.fn()
 
   beforeEach(() => {
     mutations = {
-      makeGuess: jest.fn(),
+      correctGuess: jest.fn(),
+      wrongGuess: jest.fn()
+    }
+
+    getters = {
+      contains: () => contains
     }
 
     store = new Vuex.Store({
       state: {},
-      mutations
+      mutations,
+      getters
     })
   })
 
@@ -51,26 +59,6 @@ describe('Letter.vue', () => {
   })
 
   describe('on click', () => {
-    it('inserts a new attempt with current letter', () => {
-      const wrapper = mount(Letter, { store, localVue, 
-        propsData: { letter: 'A' },
-      })
-
-      wrapper.find('span.letter').trigger('click')
-
-      expect(mutations.makeGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
-    })
-
-    it('always attempts current letter with uppercase', () => {
-      const wrapper = mount(Letter, { store, localVue, 
-        propsData: { letter: 'a' },
-      })
-
-      wrapper.find('span.letter').trigger('click')
-
-      expect(mutations.makeGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
-    })
-
     it('changes component state to clicked', () => {
       const wrapper = mount(Letter, { store, localVue, 
         propsData: { letter: 'a' },
@@ -89,7 +77,7 @@ describe('Letter.vue', () => {
       wrapper.setData({ clicked: true })
       wrapper.find('span.letter').trigger('click')
 
-      expect(mutations.makeGuess).not.toHaveBeenCalled()
+      expect(mutations.correctGuess).not.toHaveBeenCalled()
     })
 
     it('adds clicked class to span', () => {
@@ -100,6 +88,70 @@ describe('Letter.vue', () => {
       wrapper.find('span.letter').trigger('click')
 
       expect(wrapper.find('span.letter').is('.clicked')).toBe(true)
+    })
+
+    describe('on correct guessing', () => {
+      it('inserts a new attempt with current letter', () => {
+        const wrapper = mount(Letter, { store, localVue, 
+          propsData: { letter: 'A' },
+        })
+
+        contains.mockReturnValue(true)
+
+        wrapper.find('span.letter').trigger('click')
+
+        expect(mutations.correctGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
+      })
+
+      it('always attempts current letter with uppercase', () => {
+        const wrapper = mount(Letter, { store, localVue, 
+          propsData: { letter: 'a' },
+        })
+
+        contains.mockReturnValue(true)
+
+        wrapper.find('span.letter').trigger('click')
+
+        expect(mutations.correctGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
+      })
+
+      it('does not call wrongGuess', () => {
+        const wrapper = mount(Letter, { store, localVue, 
+          propsData: { letter: 'A' },
+        })
+
+        contains.mockReturnValue(true)
+
+        wrapper.find('span.letter').trigger('click')
+
+        expect(mutations.wrongGuess).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('on incorrect guessing', () => {
+      it('notificates a wrong guess', () => {
+        const wrapper = mount(Letter, { store, localVue, 
+          propsData: { letter: 'A' },
+        })
+
+        contains.mockReturnValue(false)
+
+        wrapper.find('span.letter').trigger('click')
+
+        expect(mutations.wrongGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
+      })
+
+      it('does not notificates a correct guess', () => {
+        const wrapper = mount(Letter, { store, localVue, 
+          propsData: { letter: 'A' },
+        })
+
+        contains.mockReturnValue(false)
+
+        wrapper.find('span.letter').trigger('click')
+
+        expect(mutations.correctGuess).not.toHaveBeenCalled()
+      })
     })
   })
 })

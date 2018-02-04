@@ -3,16 +3,23 @@
       <header class="nav">
         <h1>Hangman</h1>
     </header>
-    <div class="row">
-      <div class="col-sm-12 word-board">
-        <word></word>
+    <div v-show="gameOver">
+      <div class="game-over">
+        GAME-OVER
       </div>
     </div>
-    <hr>
-    <div class="row">
+    <div v-show="!gameOver">
+      <div class="row">
+        <div class="col-sm-12 word-board">
+          <word></word>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
         <div class="col-sm-11 col-md-6 alphabet-board">
           <letter v-for="letter in alphabet" :letter="letter" :key="letter"></letter>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -38,8 +45,13 @@ export default {
         (_, index) => String.fromCharCode(firstLetter + index)
       )
     },
+
     word: function () {
       return this.$store.getters.getWord
+    },
+
+    gameOver: function () {
+      return this.$store.getters.isGameOver
     }
   },
   created: function () {
@@ -71,4 +83,13 @@ header
 
 .word-board
   margin-top: 10px
+
+.game-over
+  height: 100%;
+  width: 100%;
+  margin-top: 250px;
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 3em;
+  color: #940000
+
 </style>
