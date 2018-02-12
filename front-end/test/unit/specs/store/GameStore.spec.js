@@ -17,6 +17,19 @@ describe('GameStore.js', () => {
     expect(GameStore.state.totalGuesses).toEqual(0)
   })
   
+  describe('#isGameOver()', () => {
+    it('returns false when game is not over yet', () => {
+      let state = { gameOver: false }
+
+      expect(GameStore.getters.isGameOver(state)).toEqual(false)
+    })
+
+    it('returns true when game is already over', () => {
+      let state = { gameOver: true }
+
+      expect(GameStore.getters.isGameOver(state)).toEqual(true)
+    })
+  })
 
   describe('#registerWrongAttempt', () => {
     it('increases totalGuesses by 1', () => {

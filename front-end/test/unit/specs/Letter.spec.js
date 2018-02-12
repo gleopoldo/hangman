@@ -15,8 +15,8 @@ describe('Letter.vue', () => {
 
   beforeEach(() => {
     mutations = {
-      correctGuess: jest.fn(),
-      wrongGuess: jest.fn()
+      registerGuess: jest.fn(),
+      registerWrongAttempt: jest.fn()
     }
 
     getters = {
@@ -77,7 +77,7 @@ describe('Letter.vue', () => {
       wrapper.setData({ clicked: true })
       wrapper.find('span.letter').trigger('click')
 
-      expect(mutations.correctGuess).not.toHaveBeenCalled()
+      expect(mutations.registerGuess).not.toHaveBeenCalled()
     })
 
     it('adds clicked class to span', () => {
@@ -100,7 +100,7 @@ describe('Letter.vue', () => {
 
         wrapper.find('span.letter').trigger('click')
 
-        expect(mutations.correctGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
+        expect(mutations.registerGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
       })
 
       it('always attempts current letter with uppercase', () => {
@@ -112,10 +112,10 @@ describe('Letter.vue', () => {
 
         wrapper.find('span.letter').trigger('click')
 
-        expect(mutations.correctGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
+        expect(mutations.registerGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
       })
 
-      it('does not call wrongGuess', () => {
+      it('does not call registerWrongAttempt', () => {
         const wrapper = mount(Letter, { store, localVue, 
           propsData: { letter: 'A' },
         })
@@ -124,7 +124,7 @@ describe('Letter.vue', () => {
 
         wrapper.find('span.letter').trigger('click')
 
-        expect(mutations.wrongGuess).not.toHaveBeenCalled()
+        expect(mutations.registerWrongAttempt).not.toHaveBeenCalled()
       })
     })
 
@@ -138,10 +138,10 @@ describe('Letter.vue', () => {
 
         wrapper.find('span.letter').trigger('click')
 
-        expect(mutations.wrongGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
+        expect(mutations.registerWrongAttempt).toHaveBeenCalledWith(store.state, {letter: 'A'})
       })
 
-      it('does not notificates a correct guess', () => {
+      it('notificates a guess attempt', () => {
         const wrapper = mount(Letter, { store, localVue, 
           propsData: { letter: 'A' },
         })
@@ -150,7 +150,7 @@ describe('Letter.vue', () => {
 
         wrapper.find('span.letter').trigger('click')
 
-        expect(mutations.correctGuess).not.toHaveBeenCalled()
+        expect(mutations.registerGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
       })
     })
   })
