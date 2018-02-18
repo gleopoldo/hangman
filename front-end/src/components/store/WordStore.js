@@ -29,12 +29,6 @@ const WordStore = {
   },
 
   getters: {
-    contains ({word}) {
-      return (letter) => {
-        return word.includes(letter) 
-      }
-    },
-
     getWord (state) {
       return state.word
     },

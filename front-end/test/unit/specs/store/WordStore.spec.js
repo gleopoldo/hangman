@@ -108,26 +108,6 @@ describe('WordStore.js', () => {
     })
   })
 
-  describe('contains(letter)', () => {
-    it('returns true when word contains given letter', () => {
-      let letter = 's'
-      let state = { word: 'some-word' }
-
-      let contains = WordStore.getters.contains(state)(letter)
-
-      expect(contains).toBe(true)
-    })
-
-    it('returns false when word does not contains given letter', () => {
-      let letter = 'z'
-      let state = { word: 'some-word' }
-
-      let contains = WordStore.getters.contains(state)(letter)
-
-      expect(contains).toBe(false)
-    })
-  })
-
   describe('wordWithAttempts', () => {
     it('when attempts is empty, returns an array of underscores', () => {
       let state = { word: 'something', attempts: [] }
