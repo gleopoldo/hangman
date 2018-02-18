@@ -21,19 +21,6 @@ describe('WordStore.js', () => {
     expect(WordStore.state.totalGuesses).toEqual(0)
   })
 
-  describe('registerWrongAttempt', () => {
-    it('increases totalGuesses by 1', () => {
-      let state = {
-        totalGuesses: 2,
-        totalChances: 5,
-      }
-
-      WordStore.mutations.registerWrongAttempt(state, { letter: 'A' })
-
-      expect(state.totalGuesses).toEqual(3)
-    })
-  })
-
   describe('setWord()', () => {
     it('sets a new word with uppercase', () => {
       let state = { word: '' }

@@ -22,10 +22,6 @@ const WordStore = {
         state.totalGuesses++ 
       }
     },
-
-    registerWrongAttempt: (state) => {
-      state.totalGuesses++ 
-    }
   },
 
   getters: {
