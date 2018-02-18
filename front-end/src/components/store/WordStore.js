@@ -17,6 +17,10 @@ const WordStore = {
       if(!state.attempts.includes(letter)){
         state.attempts.push(letter)
       }
+
+      if(!state.word.includes(letter)) {
+        state.totalGuesses++ 
+      }
     },
 
     registerWrongAttempt: (state) => {

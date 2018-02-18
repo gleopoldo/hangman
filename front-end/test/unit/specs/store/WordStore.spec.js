@@ -54,7 +54,7 @@ describe('WordStore.js', () => {
 
   describe('registerGuess()', () => {
     it('adds a letter into the attempts', () => {
-      let state = { attempts: [] }
+      let state = { word: 'FOO', attempts: [] }
 
       WordStore.mutations.registerGuess(state, {letter: 'A'})
 
@@ -62,7 +62,7 @@ describe('WordStore.js', () => {
     })
 
     it('keeps old attempts', () => {
-      let state = { attempts: ['Z'] }
+      let state = { word: 'FOO', attempts: ['Z'] }
 
       WordStore.mutations.registerGuess(state, {letter: 'A'})
 
@@ -70,11 +70,31 @@ describe('WordStore.js', () => {
     })
 
     it('does not duplicate attempts', () => {
-      let state = { attempts: ['Z'] }
+      let state = { word: 'FOO', attempts: ['Z'] }
 
       WordStore.mutations.registerGuess(state, {letter: 'Z'})
 
       expect(state.attempts).toEqual(['Z'])
+    })
+
+    describe('when word does not contain letter', () => {
+      it('increments total guesses by 1', () => {
+        let state = { word: 'HORSE', totalGuesses: 0, attempts: [] }
+
+        WordStore.mutations.registerGuess(state, {letter: 'Z'})
+
+        expect(state.totalGuesses).toEqual(1)
+      })
+    })
+
+    describe('when word contains letter', () => {
+      it('does not increment total guesses', () => {
+        let state = { word: 'HORSE', totalGuesses: 0, attempts: [] }
+
+        WordStore.mutations.registerGuess(state, {letter: 'H'})
+
+        expect(state.totalGuesses).toEqual(0)
+      })
     })
   })
 

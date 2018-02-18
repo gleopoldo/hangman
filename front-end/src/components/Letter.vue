@@ -28,10 +28,6 @@ export default {
       let letterPayload = { letter: this.letter.toUpperCase() }
 
       this.$store.commit('registerGuess', letterPayload)
-
-      if (!this.$store.getters.contains(this.letter)) {
-        this.$store.commit('registerWrongAttempt', letterPayload)
-      } 
     }
   },
   computed: {

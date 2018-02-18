@@ -6,21 +6,15 @@ import Vuex from 'vuex'
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-
 describe('Letter.vue', () => {
   let store
   let mutations
   let getters
-  let contains = jest.fn()
 
   beforeEach(() => {
     mutations = {
       registerGuess: jest.fn(),
       registerWrongAttempt: jest.fn()
-    }
-
-    getters = {
-      contains: () => contains
     }
 
     store = new Vuex.Store({
@@ -96,57 +90,15 @@ describe('Letter.vue', () => {
           propsData: { letter: 'A' },
         })
 
-        contains.mockReturnValue(true)
-
         wrapper.find('span.letter').trigger('click')
 
         expect(mutations.registerGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
       })
 
-      it('always attempts current letter with uppercase', () => {
+      it('ensures registering attempt with upper-cased letter', () => {
         const wrapper = mount(Letter, { store, localVue, 
           propsData: { letter: 'a' },
         })
-
-        contains.mockReturnValue(true)
-
-        wrapper.find('span.letter').trigger('click')
-
-        expect(mutations.registerGuess).toHaveBeenCalledWith(store.state, {letter: 'A'})
-      })
-
-      it('does not call registerWrongAttempt', () => {
-        const wrapper = mount(Letter, { store, localVue, 
-          propsData: { letter: 'A' },
-        })
-
-        contains.mockReturnValue(true)
-
-        wrapper.find('span.letter').trigger('click')
-
-        expect(mutations.registerWrongAttempt).not.toHaveBeenCalled()
-      })
-    })
-
-    describe('on incorrect guessing', () => {
-      it('notificates a wrong guess', () => {
-        const wrapper = mount(Letter, { store, localVue, 
-          propsData: { letter: 'A' },
-        })
-
-        contains.mockReturnValue(false)
-
-        wrapper.find('span.letter').trigger('click')
-
-        expect(mutations.registerWrongAttempt).toHaveBeenCalledWith(store.state, {letter: 'A'})
-      })
-
-      it('notificates a guess attempt', () => {
-        const wrapper = mount(Letter, { store, localVue, 
-          propsData: { letter: 'A' },
-        })
-
-        contains.mockReturnValue(false)
 
         wrapper.find('span.letter').trigger('click')
 
