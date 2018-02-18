@@ -118,24 +118,8 @@ describe('WordStore.js', () => {
       const setWord = jest.fn()
       const context = { commit: setWord }
 
-      const mock = new MockAdapter(axios)
-      mock.onGet(ApiWordEndpoint)
-        .reply(200, JSON.stringify({ word: 'some-word' }))
-
-      await WordStore.actions.renewWord(context)
-      expect(setWord).toHaveBeenCalledWith('setWord', { word: 'some-word' })
-    })
-
-    it('does not renew the context on network error', async () => {
-      const setWord = jest.fn()
-      const context = { commit: setWord }
-
-      const mock = new MockAdapter(axios)
-      mock.onGet(ApiWordEndpoint)
-        .networkError()
-
-      await WordStore.actions.renewWord(context)
-      expect(setWord).not.toHaveBeenCalled()
+      WordStore.actions.renewWord(context)
+      expect(setWord).toHaveBeenCalledWith('setWord', { word: expect.any(String) })
     })
   })
 })
