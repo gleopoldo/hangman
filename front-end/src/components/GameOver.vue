@@ -1,15 +1,25 @@
 <template>
   <div class="game-over">
-    <h1 class="title">
-      GAME-OVER
-    </h1>
+    <div class="row">
+      <div class="col-sm-12 word-board">
+        <word></word>
+      </div>
+    </div>
 
-    <button
-      id="restart-button"
-      type="button"
-      v-on:click="resetGame">
-      Restart Game
-    </button>
+    <hr>
+
+    <div class="row">
+      <h1 class="title">
+        GAME-OVER
+      </h1>
+
+      <button
+        id="restart-button"
+        type="button"
+        v-on:click="resetGame">
+        Restart Game
+      </button>
+    </div>
   </div>
 </template>
 
@@ -38,4 +48,8 @@ export default {
   #restart-button
     padding: 10px
     cursor: pointer
+
+.word-board
+  margin-top: 10px
+
 </style>
