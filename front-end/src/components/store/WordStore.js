@@ -1,4 +1,5 @@
 import { requestWord } from '@/components/adapters/WordRequester'
+import { wordWithAttempts } from '@/components/game/Core'
 
 const WordStore = {
   state: {
@@ -34,12 +35,12 @@ const WordStore = {
       return state.word
     },
 
-    wordWithAttempts ({word, attempts}) {
-      let characters = word.split('')
-
-      return characters.map((character) => {
-        return attempts.includes(character) ? character : '_'
-      })
+    wordWithAttempts ({word, attempts, isGameOver}, getters) {
+      if (getters.isGameOver) {
+        return word
+      } else {
+        return wordWithAttempts(word, attempts)
+      }
     },
 
     isGameOver (state) {

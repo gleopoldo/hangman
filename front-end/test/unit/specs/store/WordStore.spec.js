@@ -1,6 +1,5 @@
 import WordStore from '@/components/store/WordStore'
-import axios from 'axios'
-import MockAdapter from 'axios-mock-adapter'
+import * as core from '@/components/game/Core'
 
 const ApiWordEndpoint = 'http://localhost:4000'
 
@@ -115,28 +114,29 @@ describe('WordStore.js', () => {
   })
 
   describe('wordWithAttempts', () => {
-    it('when attempts is empty, returns an array of underscores', () => {
-      let state = { word: 'something', attempts: [] }
+    describe('when game is not over yet', () => {
+      it('calls wordWithAttempts with correct args', () => {
+        core.wordWithAttempts = jest.fn()
+        let state = { word: 'something', attempts: ['a', 'o', 's', 'h', 'g', 'i'] }
+        let getters = { isGameOver: false }
 
-      let fetched = WordStore.getters.wordWithAttempts(state)
+        WordStore.getters.wordWithAttempts(state, getters)
 
-      expect(fetched).toEqual(['_', '_', '_', '_', '_', '_', '_', '_', '_'])
+        expect(core.wordWithAttempts)
+          .toHaveBeenCalledWith(state.word, state.attempts)
+      })
     })
 
-    it('when attempts is not empty, returns the matched characters', () => {
-      let state = { word: 'something', attempts: ['a', 'o', 's', 'h', 'g', 'i'] }
-    
-      let fetched = WordStore.getters.wordWithAttempts(state)
+    describe('when game is over', () => {
+      it('returns the complete word without underscores', () => {
+        let state = { word: 'something', attempts: ['a', 'o', 's', 'h', 'g', 'i'] }
+        let getters = { isGameOver: true }
 
-      expect(fetched).toEqual(['s', 'o', '_', '_', '_', 'h', 'i', '_', 'g'])
-    })
+        WordStore.getters.wordWithAttempts(state, getters)
 
-    it('when word is discovered, returns all letters', () => {
-      let state = { word: 'ball', attempts: ['a', 'b', 'l'] }
-      
-      let fetched = WordStore.getters.wordWithAttempts(state)
-
-      expect(fetched).toEqual(['b', 'a', 'l', 'l'])
+        expect(core.wordWithAttempts)
+          .toHaveBeenCalledWith(state.word, state.attempts)
+      })
     })
   })
   
