@@ -5,7 +5,7 @@
     </h1>
 
     <button
-      class="restart-button"
+      id="restart-button"
       type="button"
       v-on:click="resetGame">
       Restart Game
@@ -16,16 +16,6 @@
 <script>
 export default {
   name: 'GameOver',
-  data: () => {
-    return {
-      store: this.$store
-    }
-  },
-  computed: {
-    foo () {
-      return this.$store.getters.wordWithAttempts
-    }
-  },
   methods: {
     resetGame: function () {
       this.$store.dispatch('restartGame')
@@ -39,9 +29,13 @@ export default {
   height: 100%;
   width: 100%;
   margin-top: 75px;
+  font-family: 'Alfa Slab One', cursive;
 
   .title
-    font-family: 'Alfa Slab One', cursive;
     font-size: 3em;
     color: #940000
+
+  #restart-button
+    padding: 10px
+    cursor: pointer
 </style>
