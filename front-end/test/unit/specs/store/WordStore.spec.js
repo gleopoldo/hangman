@@ -156,11 +156,21 @@ describe('WordStore.js', () => {
 
   describe('async restartGame()', () => {
     it('renews the context store word', async () => {
-      const setWord = jest.fn()
-      const context = { commit: setWord }
+      const context = { commit: jest.fn() }
 
       WordStore.actions.restartGame(context)
-      expect(setWord).toHaveBeenCalledWith('setWord', { word: expect.any(String) })
+
+      expect(context.commit)
+        .toHaveBeenCalledWith('setWord', { word: expect.any(String) })
+    })
+
+    it('resets game information', async () => {
+      const context = { commit: jest.fn() }
+
+      WordStore.actions.restartGame(context)
+
+      expect(context.commit)
+        .toHaveBeenCalledWith('resetGameInformation')
     })
   })
 })

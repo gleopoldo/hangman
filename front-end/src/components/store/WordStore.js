@@ -50,6 +50,7 @@ const WordStore = {
   actions: {
     restartGame ({ commit }) {
       commit('setWord', {word: requestWord()})
+      commit('resetGameInformation')
     }
   }
 }
