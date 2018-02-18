@@ -39,6 +39,25 @@ describe('WordStore.js', () => {
     })
   })
 
+  describe('resetGameInformation()', () => {
+    it('resets attempts array', () => {
+      let state = { attempts: ['A', 'Z'] }
+
+      WordStore.mutations.resetGameInformation(state)
+
+      expect(state.attempts).toEqual([])
+    })
+
+    it('resets totalGuesses', () => {
+      let state = { totalGuesses: 5 }
+
+      WordStore.mutations.resetGameInformation(state)
+
+      expect(state.totalGuesses).toEqual(0)
+
+    })
+  })
+
   describe('registerGuess()', () => {
     it('adds a letter into the attempts', () => {
       let state = { word: 'FOO', attempts: [] }
@@ -135,12 +154,12 @@ describe('WordStore.js', () => {
     })
   })
 
-  describe('async renewWord()', () => {
+  describe('async restartGame()', () => {
     it('renews the context store word', async () => {
       const setWord = jest.fn()
       const context = { commit: setWord }
 
-      WordStore.actions.renewWord(context)
+      WordStore.actions.restartGame(context)
       expect(setWord).toHaveBeenCalledWith('setWord', { word: expect.any(String) })
     })
   })

@@ -54,7 +54,7 @@ export default {
     }
   },
   created: function () {
-    this.$store.dispatch('renewWord')
+    this.$store.dispatch('restartGame')
   }
 }
 </script>

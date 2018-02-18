@@ -13,6 +13,11 @@ const WordStore = {
       if(word) { state.word = word.toUpperCase() }
     },
 
+    resetGameInformation(state) {
+      state.attempts = []
+      state.totalGuesses = 0
+    },
+
     registerGuess (state, {letter}) {
       if(!state.attempts.includes(letter)){
         state.attempts.push(letter)
@@ -43,7 +48,7 @@ const WordStore = {
   },
 
   actions: {
-    renewWord ({ commit }) {
+    restartGame ({ commit }) {
       commit('setWord', {word: requestWord()})
     }
   }
