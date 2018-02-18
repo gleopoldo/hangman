@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import requestWord from './adapters/WordRequester'
 import Letter from '@/components/Letter'
 import Word from '@/components/Word'
 

@@ -2,37 +2,37 @@ version: '3'
 
 services:
 
-  api:
-    build:
-      context: .
-      dockerfile: ./api/Dockerfile
-      args:
-        user_id: $UID
-        username: hangman_api
-        app_path: /api
-    container_name: hangman_api
-    hostname: hangman_api
-    user: hangman_api
-    entrypoint: "mix phx.server"
-    volumes:
-    - ./api:/api
-    ports:
-    - 4000:4000
-    depends_on:
-    - database
-    networks:
-      hangman:
-        aliases:
-        - api
+  #api:
+    #build:
+      #context: .
+      #dockerfile: ./api/Dockerfile
+      #args:
+        #user_id: $UID
+        #username: hangman_api
+        #app_path: /api
+    #container_name: hangman_api
+    #hostname: hangman_api
+    #user: hangman_api
+    #entrypoint: "mix phx.server"
+    #volumes:
+    #- ./api:/api
+    #ports:
+    #- 4000:4000
+    #depends_on:
+    #- database
+    #networks:
+      #hangman:
+        #aliases:
+        #- api
 
 
-  database:
-    container_name: hangman_pgdb
-    image: postgres:9.6
-    volumes:
-    - /var/lib/docker/hangman_pgdb:/var/lib/postgresql/data
-    networks:
-    - hangman
+  #database:
+    #container_name: hangman_pgdb
+    #image: postgres:9.6
+    #volumes:
+    #- /var/lib/docker/hangman_pgdb:/var/lib/postgresql/data
+    #networks:
+    #- hangman
 
 
   frontend:
@@ -51,8 +51,8 @@ services:
       - 8080:8080
     environment:
       HOST: 0.0.0.0
-    depends_on:
-      - api
+    #depends_on:
+      #- api
     networks:
       - hangman
     volumes:

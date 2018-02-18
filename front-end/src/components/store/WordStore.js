@@ -1,6 +1,4 @@
-import axios from 'axios'
-
-const API = 'http://localhost:4000'
+import { requestWord } from '@/components/adapters/WordRequester'
 
 const WordStore = {
   state: {
@@ -41,14 +39,8 @@ const WordStore = {
   },
 
   actions: {
-    async renewWord ({ commit }) {
-      await axios.get(API, { responseType: 'json' })
-        .then((response) => {
-          commit('setWord', { word: response.data.word })
-        })
-        .catch((error) => {
-          console.log(`Error on fetching word on api ${error}`)
-        })
+    renewWord ({ commit }) {
+      commit('setWord', {word: requestWord()})
     }
   }
 }
