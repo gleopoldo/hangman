@@ -13,6 +13,27 @@ describe('WordStore.js', () => {
     expect(WordStore.state.attempts).toEqual([])
   })
 
+  it('initializes totalChances with 5', () => {
+    expect(WordStore.state.totalChances).toEqual(5)
+  })
+
+  it('initializes totalGuesses state with 0', () => {
+    expect(WordStore.state.totalGuesses).toEqual(0)
+  })
+
+  describe('registerWrongAttempt', () => {
+    it('increases totalGuesses by 1', () => {
+      let state = {
+        totalGuesses: 2,
+        totalChances: 5,
+      }
+
+      WordStore.mutations.registerWrongAttempt(state, { letter: 'A' })
+
+      expect(state.totalGuesses).toEqual(3)
+    })
+  })
+
   describe('setWord()', () => {
     it('sets a new word with uppercase', () => {
       let state = { word: '' }
@@ -110,6 +131,20 @@ describe('WordStore.js', () => {
       let fetched = WordStore.getters.wordWithAttempts(state)
 
       expect(fetched).toEqual(['b', 'a', 'l', 'l'])
+    })
+  })
+  
+  describe('isGameOver()', () => {
+    it('returns false when player still have guesses', () => {
+      let state = { totalChances: 5, totalGuesses: 4 }
+
+      expect(WordStore.getters.isGameOver(state)).toEqual(false)
+    })
+
+    it('returns true when player used all chances', () => {
+      let state = { totalChances: 5, totalGuesses: 5 }
+
+      expect(WordStore.getters.isGameOver(state)).toEqual(true)
     })
   })
 

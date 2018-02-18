@@ -4,6 +4,8 @@ const WordStore = {
   state: {
     word: '',
     attempts: [],
+    totalChances: 5,
+    totalGuesses: 0
   },
 
   mutations: {
@@ -15,6 +17,10 @@ const WordStore = {
       if(!state.attempts.includes(letter)){
         state.attempts.push(letter)
       }
+    },
+
+    registerWrongAttempt: (state) => {
+      state.totalGuesses++ 
     }
   },
 
@@ -35,6 +41,10 @@ const WordStore = {
       return characters.map((character) => {
         return attempts.includes(character) ? character : '_'
       })
+    },
+
+    isGameOver (state) {
+      return state.totalGuesses >= state.totalChances
     }
   },
 
