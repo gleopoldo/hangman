@@ -130,43 +130,41 @@ describe('WordStore.js', () => {
   })
 
   describe('wordWithAttempts', () => {
-    describe('when game is not over yet', () => {
-      it('calls wordWithAttempts with correct args', () => {
-        core.wordWithAttempts = jest.fn()
-        let state = { word: 'something', attempts: ['a', 'o', 's', 'h', 'g', 'i'] }
-        let getters = { isGameOver: false }
+    it('calls displayWithHiddenLetters with correct args', () => {
+      core.displayWord = jest.fn()
+      let state = { word: 'something', attempts: ['a', 'o', 's', 'h', 'g', 'i'] }
+      let getters = { lostGame: false }
 
-        WordStore.getters.wordWithAttempts(state, getters)
+      WordStore.getters.wordWithAttempts(state, getters)
 
-        expect(core.wordWithAttempts)
-          .toHaveBeenCalledWith(state.word, state.attempts)
-      })
-    })
-
-    describe('when game is over', () => {
-      it('returns the complete word without underscores', () => {
-        let state = { word: 'something', attempts: ['a', 'o', 's', 'h', 'g', 'i'] }
-        let getters = { isGameOver: true }
-
-        WordStore.getters.wordWithAttempts(state, getters)
-
-        expect(core.wordWithAttempts)
-          .toHaveBeenCalledWith(state.word, state.attempts)
-      })
+      expect(core.displayWord)
+        .toHaveBeenCalledWith(state.word, state.attempts)
     })
   })
   
-  describe('isGameOver()', () => {
+  describe('wonGame()', () => {
+    it('calls hasWonGame with correct params', () => {
+      let state = { word: 'ball', attempts: ['b']}
+      core.hasDiscoveredWord = jest.fn()
+
+      WordStore.getters.wonGame(state)
+
+      expect(core.hasDiscoveredWord)
+        .toHaveBeenCalledWith(state.word, state.attempts)
+    })
+  })
+
+  describe('lostGame()', () => {
     it('returns false when player still have guesses', () => {
       let state = { totalChances: 5, totalGuesses: 4 }
 
-      expect(WordStore.getters.isGameOver(state)).toEqual(false)
+      expect(WordStore.getters.lostGame(state)).toEqual(false)
     })
 
     it('returns true when player used all chances', () => {
       let state = { totalChances: 5, totalGuesses: 5 }
 
-      expect(WordStore.getters.isGameOver(state)).toEqual(true)
+      expect(WordStore.getters.lostGame(state)).toEqual(true)
     })
   })
 

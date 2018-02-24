@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     gameOver: function () {
-      return this.$store.getters.isGameOver
+      return this.$store.getters.lostGame
     }
   },
   created: function () {

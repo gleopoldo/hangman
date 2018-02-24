@@ -1,5 +1,5 @@
 import { requestWord } from '@/components/adapters/WordRequester'
-import { wordWithAttempts } from '@/components/game/Core'
+import { displayWord, hasDiscoveredWord } from '@/components/game/Core'
 
 const WordStore = {
   state: {
@@ -41,16 +41,16 @@ const WordStore = {
       return state.word
     },
 
-    wordWithAttempts ({word, attempts, isGameOver}, getters) {
-      if (getters.isGameOver) {
-        return word
-      } else {
-        return wordWithAttempts(word, attempts)
-      }
+    wordWithAttempts ({word, attempts}, getters) {
+      return displayWord(word, attempts)
     },
 
-    isGameOver (state) {
+    lostGame (state) {
       return state.totalGuesses >= state.totalChances
+    },
+
+    wonGame ({word, attempts}) {
+      return hasDiscoveredWord(word, attempts)
     }
   },
 
