@@ -31,6 +31,12 @@ const WordStore = {
   },
 
   getters: {
+    attemptedLetter(state) {
+      return (letter) => {
+        return state.attempts.includes(letter)
+      }
+    },
+
     getWord (state) {
       return state.word
     },

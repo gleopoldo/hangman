@@ -34,9 +34,6 @@ export default {
         (_, index) => String.fromCharCode(firstLetter + index)
       )
     },
-  },
-  created: function () {
-    this.$store.dispatch('restartGame')
   }
 }
 </script>

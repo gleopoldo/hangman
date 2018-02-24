@@ -24,8 +24,13 @@
 </template>
 
 <script>
+import Word from '@/components/Word'
+
 export default {
   name: 'GameOver',
+  components: {
+    Word
+  },
   methods: {
     resetGame: function () {
       this.$store.dispatch('restartGame')

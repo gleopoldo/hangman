@@ -113,6 +113,22 @@ describe('WordStore.js', () => {
     })
   })
 
+  describe('attemptedLetter()', () => {
+    it('returns true when the letter was already attempted', () => {
+      let state = { attempts: ['A', 'B'] }
+
+      expect(WordStore.getters.attemptedLetter(state)('A'))
+        .toEqual(true)
+    })
+
+    it('returns false when the letter was not attempted', () => {
+      let state = { attempts: ['A', 'B'] }
+
+      expect(WordStore.getters.attemptedLetter(state)('C'))
+        .toEqual(false)
+    })
+  })
+
   describe('wordWithAttempts', () => {
     describe('when game is not over yet', () => {
       it('calls wordWithAttempts with correct args', () => {
