@@ -1,18 +1,30 @@
-## Hangman
+# hangman
 
-This is a Hangman Game implemented with the purpose to allow people practice
-english together while playing.
+> The hangman game
 
-#### Dependencies
+## Build Setup
 
-You must have:
+``` bash
+# install dependencies
+npm install
 
-* Docker, preferable 17.09 or above
-* Docker-compose, preferable 1.17.0 or above
+# serve with hot reload at localhost:8080
+npm run dev
 
-#### Setup
+# build for production with minification
+npm run build
 
-We have a full installation script. Just run `./scripts/hangman setup`
+# build for production and view the bundle analyzer report
+npm run build --report
 
-Also, run `hangman help` after setup installation in order to see available
-options
+# run unit tests
+npm run unit
+
+# run e2e tests
+npm run e2e
+
+# run all tests
+npm test
+```
+
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

@@ -20,17 +20,9 @@ case $COMMAND in
     # Build containers
     $0 clean   
     $0 build
-    $0 db:create
 
     echo "Finished! \\o/"
     echo "Now run hangman help to get usage information"
-  ;;
-
-  db:create)
-    echo -n "Preparing database... "
-    docker-compose run \
-      --entrypoint '/bin/sh -c' api 'mix ecto.create'
-    echo "Done"
   ;;
 
   start)
@@ -57,43 +49,22 @@ case $COMMAND in
     # must override the default entrypoint
     #
     # This command returns if the build was not successful
-    echo -n "Creating containers... "
-    docker-compose build
-    echo "Created!"
-
-    # Install phoenix dependencies into the api container
-    echo -n "Running mix deps.get to configure project dependencies... "
-    $0 phx:deps &> /dev/null
-
-    docker-compose run \
-      --entrypoint '/bin/sh -c' api 'cd ./assets && npm install' &> /dev/null
-    echo "Done!"
+    echo -n "Build the hangman game image... "
+    docker-compose build --build-arg user_id=$UID hangman
     
-    # Install frontend app dependencies into the frontend container
-    echo -n "Installing frontend dependencies... "
     docker-compose run \
-      --entrypoint '/bin/sh -c' frontend 'yarn install'
+      --entrypoint '/bin/sh -c' hangman 'yarn install'
     echo "Done!"
   ;;
 
-  phx:console)
+  console)
     docker-compose run \
-      --entrypoint '/bin/sh' api
+      --entrypoint '/bin/sh' hangman
   ;;
 
-  npm:console)
+  unit)
     docker-compose run \
-      --entrypoint '/bin/sh' frontend
-  ;;
-
-  phx:deps)
-    docker-compose run \
-      --entrypoint '/bin/sh -c' api 'mix deps.get'
-  ;;
-
-  npm:unit)
-    docker-compose run \
-      --entrypoint '/bin/sh -c' frontend 'npm run unit'
+      --entrypoint '/bin/sh -c' hangman "yarn unit ${@:2}"
   ;;
 
 
@@ -102,11 +73,8 @@ case $COMMAND in
     echo "Invalid option. The allowed ones are:"
     echo "build          - Build hangman containers"
     echo "clean          - Kills all running containers and deletes them"
-    echo "db:create      - Create the hangman database"
-    echo "npm:console    - Run the hangman console inside frontend container"
-    echo "npm:unit       - Runs test suites"
-    echo "phx:console    - Run the hangman console inside api container"
-    echo "phx:deps       - Install phoenix deps"
+    echo "console        - Run the hangman console inside hangman container"
+    echo "unit           - Runs test suites"
     echo "setup          - Setup the hangman project"
     echo "start          - Start the hangman"
     echo "stop           - Stop the hangman"
