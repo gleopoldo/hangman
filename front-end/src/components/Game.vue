@@ -5,21 +5,28 @@
     </header>
 
     <game-over v-show="gameOver"></game-over>
-    <hangman v-show="!gameOver"></hangman>
+    <won-game v-show="wonGame"></won-game>
+    <hangman v-show="!wonGame && !gameOver"></hangman>
   </div>
 </template>
 
 <script>
 import Hangman from '@/components/Hangman'
 import GameOver from '@/components/GameOver'
+import WonGame from '@/components/WonGame'
 
 export default {
   name: 'Game',
   components: {
     Hangman,
-    GameOver
+    GameOver,
+    WonGame
   },
   computed: {
+    wonGame: function () {
+      return this.$store.getters.wonGame
+    },
+
     gameOver: function () {
       return this.$store.getters.lostGame
     }
