@@ -20,17 +20,9 @@ case $COMMAND in
     # Build containers
     $0 clean   
     $0 build
-    $0 db:create
 
     echo "Finished! \\o/"
     echo "Now run hangman help to get usage information"
-  ;;
-
-  db:create)
-    echo -n "Preparing database... "
-    docker-compose run \
-      --entrypoint '/bin/sh -c' api 'mix ecto.create'
-    echo "Done"
   ;;
 
   start)
@@ -60,14 +52,6 @@ case $COMMAND in
     echo -n "Creating containers... "
     docker-compose build
     echo "Created!"
-
-    # Install phoenix dependencies into the api container
-    echo -n "Running mix deps.get to configure project dependencies... "
-    $0 phx:deps &> /dev/null
-
-    docker-compose run \
-      --entrypoint '/bin/sh -c' api 'cd ./assets && npm install' &> /dev/null
-    echo "Done!"
     
     # Install frontend app dependencies into the frontend container
     echo -n "Installing frontend dependencies... "
@@ -76,24 +60,14 @@ case $COMMAND in
     echo "Done!"
   ;;
 
-  phx:console)
-    docker-compose run \
-      --entrypoint '/bin/sh' api
-  ;;
-
-  npm:console)
+  console)
     docker-compose run \
       --entrypoint '/bin/sh' frontend
   ;;
 
-  phx:deps)
+  unit)
     docker-compose run \
-      --entrypoint '/bin/sh -c' api 'mix deps.get'
-  ;;
-
-  npm:unit)
-    docker-compose run \
-      --entrypoint '/bin/sh -c' frontend 'npm run unit'
+      --entrypoint '/bin/sh -c' frontend "yarn unit ${@:2}"
   ;;
 
 
@@ -102,11 +76,8 @@ case $COMMAND in
     echo "Invalid option. The allowed ones are:"
     echo "build          - Build hangman containers"
     echo "clean          - Kills all running containers and deletes them"
-    echo "db:create      - Create the hangman database"
-    echo "npm:console    - Run the hangman console inside frontend container"
-    echo "npm:unit       - Runs test suites"
-    echo "phx:console    - Run the hangman console inside api container"
-    echo "phx:deps       - Install phoenix deps"
+    echo "console        - Run the hangman console inside frontend container"
+    echo "unit           - Runs test suites"
     echo "setup          - Setup the hangman project"
     echo "start          - Start the hangman"
     echo "stop           - Stop the hangman"
