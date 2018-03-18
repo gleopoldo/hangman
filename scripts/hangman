@@ -49,25 +49,22 @@ case $COMMAND in
     # must override the default entrypoint
     #
     # This command returns if the build was not successful
-    echo -n "Creating containers... "
-    docker-compose build
-    echo "Created!"
+    echo -n "Build the hangman game image... "
+    docker-compose build --build-arg user_id=$UID hangman
     
-    # Install frontend app dependencies into the frontend container
-    echo -n "Installing frontend dependencies... "
     docker-compose run \
-      --entrypoint '/bin/sh -c' frontend 'yarn install'
+      --entrypoint '/bin/sh -c' hangman 'yarn install'
     echo "Done!"
   ;;
 
   console)
     docker-compose run \
-      --entrypoint '/bin/sh' frontend
+      --entrypoint '/bin/sh' hangman
   ;;
 
   unit)
     docker-compose run \
-      --entrypoint '/bin/sh -c' frontend "yarn unit ${@:2}"
+      --entrypoint '/bin/sh -c' hangman "yarn unit ${@:2}"
   ;;
 
 
@@ -76,7 +73,7 @@ case $COMMAND in
     echo "Invalid option. The allowed ones are:"
     echo "build          - Build hangman containers"
     echo "clean          - Kills all running containers and deletes them"
-    echo "console        - Run the hangman console inside frontend container"
+    echo "console        - Run the hangman console inside hangman container"
     echo "unit           - Runs test suites"
     echo "setup          - Setup the hangman project"
     echo "start          - Start the hangman"

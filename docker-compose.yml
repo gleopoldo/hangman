@@ -1,28 +1,23 @@
 version: '3'
 
 services:
-  frontend:
+  hangman:
     build:
       context: .
-      dockerfile: ./front-end/Dockerfile
       args:
-        user_id: $UID
-        username: hangman_frontend
-        app_path: /frontend
-    container_name: hangman_frontend
-    hostname: hangman_frontend
+        username: hangman
+    container_name: hangman
+    hostname: hangman
     user: root
     entrypoint: 'yarn dev'
     ports:
       - 8080:8080
     environment:
       HOST: 0.0.0.0
-    #depends_on:
-      #- api
     networks:
       - hangman
     volumes:
-    - ./front-end:/frontend
+    - .:/hangman
 
 networks:
   hangman:
