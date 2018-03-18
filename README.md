@@ -1,30 +1,32 @@
 # hangman
 
-> The hangman game
+The hangman game, built fir practicing english while having fun :)
 
-## Build Setup
+### Dependencies
 
-``` bash
-# install dependencies
-npm install
+You must first install Docker and Docker-compose
 
-# serve with hot reload at localhost:8080
-npm run dev
+- Docker version 17.09.1 or higher
+- Docker-compose version 1.17.0 or higher
 
-# build for production with minification
-npm run build
+### Setup
 
-# build for production and view the bundle analyzer report
-npm run build --report
+First run `./scripts/hangman setup`.
 
-# run unit tests
-npm run unit
+In order to grant that every time you can just run `hangman` command,
+you can add `alias hangman="<path-to-hangman>/scripts/hangman`
+to your .bashrc or .zshrc
 
-# run e2e tests
-npm run e2e
+### Starting
 
-# run all tests
-npm test
-```
+Just run `hangman start` to start the project in port 8080.
+Access it by opening your favorite browser and accessing `http://localhost:8080`.
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### Tests
+
+Run `hangman unit` to run your unit tests.
+
+Run `hangman unit --coverage` in order to get a full coverage reports after
+running the suite.
+
+Run `hangman unit <name-of-file>` to run specs from a specific file (or directory)
