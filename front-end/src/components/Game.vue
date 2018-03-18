@@ -1,60 +1,38 @@
 <template>
   <div id="game">
-      <header class="nav">
-        <h1>Hangman</h1>
+    <header class="nav">
+      <h1>Hangman</h1>
     </header>
-    <div v-show="gameOver">
-      <div class="game-over">
-        GAME-OVER
-      </div>
-    </div>
-    <div v-show="!gameOver">
-      <div class="row">
-        <div class="col-sm-12 word-board">
-          <word></word>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-sm-11 col-md-6 alphabet-board">
-          <letter v-for="letter in alphabet" :letter="letter" :key="letter"></letter>
-        </div>
-      </div>
-    </div>
+
+    <game-over v-show="gameOver"></game-over>
+    <won-game v-show="wonGame"></won-game>
+    <hangman v-show="!wonGame && !gameOver"></hangman>
   </div>
 </template>
 
 <script>
-import Letter from '@/components/Letter'
-import Word from '@/components/Word'
+import Hangman from '@/components/Hangman'
+import GameOver from '@/components/GameOver'
+import WonGame from '@/components/WonGame'
 
 export default {
   name: 'Game',
   components: {
-    Letter,
-    Word
+    Hangman,
+    GameOver,
+    WonGame
   },
   computed: {
-    alphabet: function () {
-      let firstLetter = 'A'.charCodeAt(0)
-      let lastLetter = 'Z'.charCodeAt(0)
-
-      return Array.from(
-        new Array(lastLetter - firstLetter + 1),
-        (_, index) => String.fromCharCode(firstLetter + index)
-      )
-    },
-
-    word: function () {
-      return this.$store.getters.getWord
+    wonGame: function () {
+      return this.$store.getters.wonGame
     },
 
     gameOver: function () {
-      return this.$store.getters.isGameOver
+      return this.$store.getters.lostGame
     }
   },
   created: function () {
-    this.$store.dispatch('renewWord')
+    this.$store.dispatch('restartGame')
   }
 }
 </script>
@@ -67,28 +45,10 @@ header
   -moz-background-size: cover;
   -o-background-size: cover;
 
-  h1
-    padding: 15px;
-    font-size: 4em;
-    font-family: 'Alfa Slab One', cursive;
-    font-weight: 100;
-    color: #65300a;
-
-.alphabet-board
-  margin: 60px auto 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-
-.word-board
-  margin-top: 10px
-
-.game-over
-  height: 100%;
-  width: 100%;
-  margin-top: 250px;
+h1
+  padding: 15px;
+  font-size: 4em;
   font-family: 'Alfa Slab One', cursive;
-  font-size: 3em;
-  color: #940000
-
+  font-weight: 100;
+  color: #65300a;
 </style>

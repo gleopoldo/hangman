@@ -1,6 +1,5 @@
 import WordStore from '@/components/store/WordStore'
-import axios from 'axios'
-import MockAdapter from 'axios-mock-adapter'
+import * as core from '@/components/game/Core'
 
 const ApiWordEndpoint = 'http://localhost:4000'
 
@@ -11,6 +10,14 @@ describe('WordStore.js', () => {
 
   it('initializes attempts state with an empty array', () => {
     expect(WordStore.state.attempts).toEqual([])
+  })
+
+  it('initializes totalChances with 5', () => {
+    expect(WordStore.state.totalChances).toEqual(5)
+  })
+
+  it('initializes totalGuesses state with 0', () => {
+    expect(WordStore.state.totalGuesses).toEqual(0)
   })
 
   describe('setWord()', () => {
@@ -31,9 +38,28 @@ describe('WordStore.js', () => {
     })
   })
 
+  describe('resetGameInformation()', () => {
+    it('resets attempts array', () => {
+      let state = { attempts: ['A', 'Z'] }
+
+      WordStore.mutations.resetGameInformation(state)
+
+      expect(state.attempts).toEqual([])
+    })
+
+    it('resets totalGuesses', () => {
+      let state = { totalGuesses: 5 }
+
+      WordStore.mutations.resetGameInformation(state)
+
+      expect(state.totalGuesses).toEqual(0)
+
+    })
+  })
+
   describe('registerGuess()', () => {
     it('adds a letter into the attempts', () => {
-      let state = { attempts: [] }
+      let state = { word: 'FOO', attempts: [] }
 
       WordStore.mutations.registerGuess(state, {letter: 'A'})
 
@@ -41,7 +67,7 @@ describe('WordStore.js', () => {
     })
 
     it('keeps old attempts', () => {
-      let state = { attempts: ['Z'] }
+      let state = { word: 'FOO', attempts: ['Z'] }
 
       WordStore.mutations.registerGuess(state, {letter: 'A'})
 
@@ -49,11 +75,31 @@ describe('WordStore.js', () => {
     })
 
     it('does not duplicate attempts', () => {
-      let state = { attempts: ['Z'] }
+      let state = { word: 'FOO', attempts: ['Z'] }
 
       WordStore.mutations.registerGuess(state, {letter: 'Z'})
 
       expect(state.attempts).toEqual(['Z'])
+    })
+
+    describe('when word does not contain letter', () => {
+      it('increments total guesses by 1', () => {
+        let state = { word: 'HORSE', totalGuesses: 0, attempts: [] }
+
+        WordStore.mutations.registerGuess(state, {letter: 'Z'})
+
+        expect(state.totalGuesses).toEqual(1)
+      })
+    })
+
+    describe('when word contains letter', () => {
+      it('does not increment total guesses', () => {
+        let state = { word: 'HORSE', totalGuesses: 0, attempts: [] }
+
+        WordStore.mutations.registerGuess(state, {letter: 'H'})
+
+        expect(state.totalGuesses).toEqual(0)
+      })
     })
   })
 
@@ -67,59 +113,78 @@ describe('WordStore.js', () => {
     })
   })
 
-  describe('contains(letter)', () => {
-    it('returns true when word contains given letter', () => {
-      let letter = 's'
-      let state = { word: 'some-word' }
+  describe('attemptedLetter()', () => {
+    it('returns true when the letter was already attempted', () => {
+      let state = { attempts: ['A', 'B'] }
 
-      let contains = WordStore.getters.contains(state)(letter)
-
-      expect(contains).toBe(true)
+      expect(WordStore.getters.attemptedLetter(state)('A'))
+        .toEqual(true)
     })
 
-    it('returns false when word does not contains given letter', () => {
-      let letter = 'z'
-      let state = { word: 'some-word' }
+    it('returns false when the letter was not attempted', () => {
+      let state = { attempts: ['A', 'B'] }
 
-      let contains = WordStore.getters.contains(state)(letter)
-
-      expect(contains).toBe(false)
+      expect(WordStore.getters.attemptedLetter(state)('C'))
+        .toEqual(false)
     })
   })
 
   describe('wordWithAttempts', () => {
-    it('when attempts is empty, returns an array of underscores', () => {
-      let state = { word: 'something', attempts: [] }
-
-      let fetched = WordStore.getters.wordWithAttempts(state)
-
-      expect(fetched).toEqual(['_', '_', '_', '_', '_', '_', '_', '_', '_'])
-    })
-
-    it('when attempts is not empty, returns the matched characters', () => {
+    it('calls displayWithHiddenLetters with correct args', () => {
+      core.displayWord = jest.fn()
       let state = { word: 'something', attempts: ['a', 'o', 's', 'h', 'g', 'i'] }
-    
-      let fetched = WordStore.getters.wordWithAttempts(state)
+      let getters = { lostGame: false }
 
-      expect(fetched).toEqual(['s', 'o', '_', '_', '_', 'h', 'i', '_', 'g'])
+      WordStore.getters.wordWithAttempts(state, getters)
+
+      expect(core.displayWord)
+        .toHaveBeenCalledWith(state.word, state.attempts)
     })
+  })
+  
+  describe('wonGame()', () => {
+    it('calls hasWonGame with correct params', () => {
+      let state = { word: 'ball', attempts: ['b']}
+      core.hasDiscoveredWord = jest.fn()
 
-    it('when word is discovered, returns all letters', () => {
-      let state = { word: 'ball', attempts: ['a', 'b', 'l'] }
-      
-      let fetched = WordStore.getters.wordWithAttempts(state)
+      WordStore.getters.wonGame(state)
 
-      expect(fetched).toEqual(['b', 'a', 'l', 'l'])
+      expect(core.hasDiscoveredWord)
+        .toHaveBeenCalledWith(state.word, state.attempts)
     })
   })
 
-  describe('async renewWord()', () => {
-    it('renews the context store word', async () => {
-      const setWord = jest.fn()
-      const context = { commit: setWord }
+  describe('lostGame()', () => {
+    it('returns false when player still have guesses', () => {
+      let state = { totalChances: 5, totalGuesses: 4 }
 
-      WordStore.actions.renewWord(context)
-      expect(setWord).toHaveBeenCalledWith('setWord', { word: expect.any(String) })
+      expect(WordStore.getters.lostGame(state)).toEqual(false)
+    })
+
+    it('returns true when player used all chances', () => {
+      let state = { totalChances: 5, totalGuesses: 5 }
+
+      expect(WordStore.getters.lostGame(state)).toEqual(true)
+    })
+  })
+
+  describe('async restartGame()', () => {
+    it('renews the context store word', async () => {
+      const context = { commit: jest.fn() }
+
+      WordStore.actions.restartGame(context)
+
+      expect(context.commit)
+        .toHaveBeenCalledWith('setWord', { word: expect.any(String) })
+    })
+
+    it('resets game information', async () => {
+      const context = { commit: jest.fn() }
+
+      WordStore.actions.restartGame(context)
+
+      expect(context.commit)
+        .toHaveBeenCalledWith('resetGameInformation')
     })
   })
 })

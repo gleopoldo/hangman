@@ -7,11 +7,6 @@
 <script>
 
 export default {
-  data: () => {
-    return {
-      clicked: false
-    }
-  },
   props: {
     letter: {
       type: String,
@@ -20,23 +15,18 @@ export default {
   },
   methods: {
     guess () {
-      if(!this.clicked) { this.submitGuess() }
-      this.clicked = true
+      this.submitGuess()
     },
 
     submitGuess () {
       let letterPayload = { letter: this.letter.toUpperCase() }
 
       this.$store.commit('registerGuess', letterPayload)
-
-      if (!this.$store.getters.contains(this.letter)) {
-        this.$store.commit('registerWrongAttempt', letterPayload)
-      } 
     }
   },
   computed: {
     clickedClass () {
-      return this.clicked ? 'clicked' : ''
+      return this.$store.getters.attemptedLetter(this.letter.toUpperCase()) ? 'clicked' : ''
     }
   }
 }

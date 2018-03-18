@@ -1,9 +1,12 @@
 import { requestWord } from '@/components/adapters/WordRequester'
+import { displayWord, hasDiscoveredWord } from '@/components/game/Core'
 
 const WordStore = {
   state: {
     word: '',
     attempts: [],
+    totalChances: 5,
+    totalGuesses: 0
   },
 
   mutations: {
@@ -11,17 +14,26 @@ const WordStore = {
       if(word) { state.word = word.toUpperCase() }
     },
 
+    resetGameInformation(state) {
+      state.attempts = []
+      state.totalGuesses = 0
+    },
+
     registerGuess (state, {letter}) {
       if(!state.attempts.includes(letter)){
         state.attempts.push(letter)
       }
-    }
+
+      if(!state.word.includes(letter)) {
+        state.totalGuesses++ 
+      }
+    },
   },
 
   getters: {
-    contains ({word}) {
+    attemptedLetter(state) {
       return (letter) => {
-        return word.includes(letter) 
+        return state.attempts.includes(letter)
       }
     },
 
@@ -29,18 +41,23 @@ const WordStore = {
       return state.word
     },
 
-    wordWithAttempts ({word, attempts}) {
-      let characters = word.split('')
+    wordWithAttempts ({word, attempts}, getters) {
+      return displayWord(word, attempts)
+    },
 
-      return characters.map((character) => {
-        return attempts.includes(character) ? character : '_'
-      })
+    lostGame (state) {
+      return state.totalGuesses >= state.totalChances
+    },
+
+    wonGame ({word, attempts}) {
+      return hasDiscoveredWord(word, attempts)
     }
   },
 
   actions: {
-    renewWord ({ commit }) {
+    restartGame ({ commit }) {
       commit('setWord', {word: requestWord()})
+      commit('resetGameInformation')
     }
   }
 }
