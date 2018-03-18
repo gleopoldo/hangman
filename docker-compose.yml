@@ -8,7 +8,7 @@ services:
         username: hangman
     container_name: hangman
     hostname: hangman
-    user: root
+    user: hangman
     entrypoint: 'yarn dev'
     ports:
       - 8080:8080
