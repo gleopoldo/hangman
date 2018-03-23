@@ -2,6 +2,6 @@
 .ash_history
 .vue-templates
 .config
-node_modules
+node_modules/
 .cache
 test/unit/coverage/
