@@ -11,13 +11,7 @@
 </script>
 
 <style scoped lang="sass">
-
-$phone-size: "only screen and (min-width: 768px)";
-$desktop-size: "only screen and (min-width: 992px)";
-$btn-background: #65300a
-$btn-background-hover: #ab5111
-$btn-background-active: #371a05
-$main-font: 'Alfa Slab One', cursive
+@import '../styles/variables';
 
 #home
   background: url('../assets/background.jpg') no-repeat center center fixed;
