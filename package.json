@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run build && npm run build:server && babel-node dist/server.js",
-    "build:server": "babel ./server.js --out-file dist/server.js --presets es2015",
+    "start": "npm run build && npm run build:server && babel-node hangman-server.js",
+    "build:server": "babel ./server.js --out-file ./hangman-server.js --presets es2015",
     "unit": "jest --config test/unit/jest.conf.js --verbose",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
