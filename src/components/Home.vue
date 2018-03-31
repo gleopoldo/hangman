@@ -1,17 +1,9 @@
 <template>
   <div id="home">
-    <div class="row">
-      <div id="logo" class="col-md-12">
-        <h1>HANGMAN</h1>
-        <img src="../assets/hangman.png">
-      </div>
-    </div>
+    <h1 id="logo">HANGMAN</h1>
+    <img id="logo-img" src="../assets/hangman.png">
 
-    <div class="row">
-      <div class="col-md-12">
-        <router-link to="/game" class="btn btn-primary">Play</router-link>
-      </div>
-    </div>
+    <router-link id="play-btn" to="/game" class="btn btn-primary">Play</router-link>
   </div>
 </template>
 
@@ -20,6 +12,13 @@
 
 <style scoped lang="sass">
 
+$phone-size: "only screen and (min-width: 768px)";
+$desktop-size: "only screen and (min-width: 992px)";
+$btn-background: #65300a
+$btn-background-hover: #ab5111
+$btn-background-active: #371a05
+$main-font: 'Alfa Slab One', cursive
+
 #home
   background: url('../assets/background.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -27,51 +26,47 @@
   -o-background-size: cover;
   height: 100%
 
-  .row:first-child
-    padding-top: 150px;
-    height: 300px;
+#play-btn
+  background-color: $btn-background;
+  border-radius: 10px;
+  color: white;
+  font-family: $main-font;
+  font-size: 2em;
+  font-weight: 100;
+  padding: 5px 20px;
+  position: relative;
+  margin-top: 500px;
 
-  .row:last-child
-    margin-top: 230px;
+#play-btn:hover
+    background-color: $btn-background-hover
 
-    a
-      background-color: #65300a;
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      font-family: 'Alfa Slab One', cursive;
-      font-weight: 100;
-      font-size: 2em;
-
-    a:hover
-      background-color: #ab5111
-
-    a:active
-      background-color: #371a05
-
-
-
-#home::before
-  content: '';
-  background-color: white;
-  opacity: 0.5;
+#play-btn:active
+    background-color: $btn-background-active
 
 #logo
-  display: flex;
-  position: relative;
+  color: $btn-background;
+  font-family: $main-font;
   justify-content: center;
-
-h1
-  margin-top: 50px;
-  font-size: 5em;
-  font-family: 'Alfa Slab One', cursive;
-  font-weight: 100;
-  color: #65300a
-
-img
   position: absolute;
-  height: 300px;
-  width: 500px;
-  left: 500px;
-  top: 0;
+  top: 30px;
+  left: 0;
+  right: 0;
+  font-size: 3em;
+
+  @media #{$desktop-size}
+    margin-top: 50px;
+    font-size: 5em;
+    font-weight: 100;
+
+#logo-img
+  display: none;
+
+  @media #{$desktop-size}
+    display: block
+    position: absolute;
+    height: 200px;
+    width: 380px;
+    top: 280px;
+    left: 150px;
+
 </style>
