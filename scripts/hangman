@@ -25,6 +25,12 @@ case $COMMAND in
     echo "Now run hangman help to get usage information"
   ;;
 
+  deploy)
+    echo "Deploying master into heroku..."
+    git push heroku master
+    echo "Done"
+  ;;
+
   start)
     echo "Starting servers... "
     docker-compose up
