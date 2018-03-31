@@ -8,3 +8,4 @@ test/unit/coverage/
 package-lock.json
 hangman-server.js
 .yarnrc
+dist/
