@@ -9,10 +9,6 @@ const DEFAULT_PORT  = 8080
 app.set('port', process.env.PORT || DEFAULT_PORT);
 app.use(express.static(DIST_DIR));
 
-app.get('manifest.json', (req, res) => {
-  res.sendFile(path.join(DIST_DIR, 'manifest.json'))
-});
-
 app.get('*', (req, res) => {
   console.log("Handling request.")
   res.sendFile(HTML_FILE)
