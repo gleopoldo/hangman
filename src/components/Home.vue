@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <h1 id="logo">HANGMAN</h1>
+    <h1 id="logo">Hangman</h1>
     <img id="logo-img" src="../assets/hangman.png">
 
     <router-link id="play-btn" to="/game" class="btn btn-primary">Play</router-link>
