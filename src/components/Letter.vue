@@ -33,28 +33,39 @@ export default {
 </script>
 
 <style lang="sass">
+@import '../styles/variables'
+
 .letter-box
-  height: 90px
-  width: 80px
   position: relative
+  height: 60px
+  width: 55px
+
+  @media #{$desktop-size}
+    height: 80px
+    width: 80px
 
   .letter
-    position: absolute
-    bottom: 0
-    left: 0
-    font-family: 'Alfa Slab One', cursive;
-    font-size: 2.5em;
-    padding: 10%;
-    margin: 5px;
-    float: left;
-    width: 80px;
-    height: 75px;
+    background-image: url('../assets/square_wood0001.png');
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-image: url('../assets/square_wood0001.png');
     cursor: pointer;
     color: black;
+    position: absolute
+    bottom: 0
+    left: 0
+    font-family: $main-font;
+    font-size: 2.15em;
+    width: 50px;
+    height: 55px;
+    float: left;
+
+    @media #{$desktop-size}
+      padding: 10%;
+      font-size: 2.5em;
+      margin: 5px;
+      width: 80px;
+      height: 75px;
 
   .clicked
     cursor: not-allowed;
@@ -76,5 +87,4 @@ export default {
     color: white
     bottom: 5px
 
-    
 </style>

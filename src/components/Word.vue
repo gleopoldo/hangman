@@ -15,12 +15,15 @@ export default {
 </script>
 
 <style lang="sass">
-.word
-  margin-top: 70px
+@import '../styles/variables'
 
+.word
   .single-letter
     display: inline
-    font-size: 3em
-    font-family: 'Alfa Slab One', cursive
+    font-family: $main-font
     margin-left: 5px
+    font-size: 2.5em
+
+    @media #{$desktop-size}
+      font-size: 3em
 </style>

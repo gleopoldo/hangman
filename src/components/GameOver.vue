@@ -42,28 +42,41 @@ export default {
 </script>
 
 <style lang="sass">
+@import '../styles/variables';
+
+$color-wrong-btn: #4A0000;
+$color-wrong-hover: #9E1919;
+$color-wrong-title: #940000;
 
 .game-over
   height: 100%;
   width: 100%;
-  font-family: 'Alfa Slab One', cursive;
+  font-family: $main-font;
 
   .game-over-pane
     margin-top: 125px;
 
+    @media #{$desktop-size}
+      margin-top: 45px;
+
     .title
-      font-size: 4em;
-      color: #940000;
+      color: $color-wrong-title;
+      font-size: 2.25em;
+      padding: 0;
+
+      @media #{$desktop-size}
+        font-size: 3.5em;
 
     #restart-button
+      font-size: 1.5em;
       padding: 10px;
       cursor: pointer;
       border-radius: 10px;
       border: 0;
       color: white;
       transition: background-color 0.15s ease;
-      background-color: #4A0000
+      background-color: $color-wrong-btn;
 
     #restart-button:hover
-      background-color: #9E1919
+      background-color: $color-wrong-hover;
 </style>

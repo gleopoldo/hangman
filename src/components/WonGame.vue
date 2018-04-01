@@ -42,27 +42,41 @@ export default {
 </script>
 
 <style lang="sass">
+@import '../styles/variables';
+
+$color-won-btn: #335d12;
+$color-won-hover: #569C1F;
+$color-won-title: #223e0c;
+
 .won-game
   height: 100%;
   width: 100%;
-  font-family: 'Alfa Slab One', cursive;
+  font-family: $main-font;
 
   .game-over-pane
     margin-top: 125px;
 
+    @media #{$desktop-size}
+      margin-top: 45px;
+
     .title
-      font-size: 4em;
-      color: #223e0c;
+      color: $color-won-title;
+      font-size: 2.25em;
+      padding: 0;
+
+      @media #{$desktop-size}
+        font-size: 3.5em;
 
     #restart-button
+      font-size: 1.5em;
       padding: 10px;
       cursor: pointer;
       border-radius: 10px;
       border: 0;
       color: white;
       transition: background-color 0.15s ease;
-      background-color: #335d12;
+      background-color: $color-won-btn;
 
     #restart-button:hover
-      background-color: #569C1F;
+      background-color: $color-won-hover;
 </style>

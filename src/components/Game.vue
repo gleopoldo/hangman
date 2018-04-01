@@ -38,17 +38,25 @@ export default {
 </script>
 
 <style lang="sass">
+@import '../styles/variables';
+
 header
-  height: 100px;
   background: url('../assets/background.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
 
+  @media #{$desktop-size}
+    height: 80px;
+
 h1
-  padding: 15px;
-  font-size: 4em;
-  font-family: 'Alfa Slab One', cursive;
-  font-weight: 100;
-  color: #65300a;
+  font-family: $main-font;
+  color: $btn-background;
+  padding: 10px 0 0 20px;
+
+  @media #{$desktop-size}
+    padding: 15px;
+    font-size: 3em;
+    font-weight: 100;
+
 </style>

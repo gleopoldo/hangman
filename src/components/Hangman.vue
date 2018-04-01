@@ -39,13 +39,20 @@ export default {
 </script>
 
 <style lang="sass">
+@import '../styles/variables'
+
+.word-board
+  margin-top: 60px;
+
+  @media #{$desktop-size}
+    margin-top: 70px
+
 .alphabet-board
-  margin: 60px auto 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 80px;
 
-.word-board
-  margin-top: 10px
-
+  @media #{$desktop-size}
+    margin: 60px auto 0;
 </style>
